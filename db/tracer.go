@@ -14,6 +14,7 @@ import (
 	"github.com/mattn/go-sqlite3"
 )
 
+// Tracer configures query tracing for the wrapped SQLite driver.
 type Tracer struct {
 	SlowThresh  time.Duration // 0 = off
 	MaskArgs    bool
@@ -134,10 +135,12 @@ func maskArgs(args []driver.NamedValue, mask bool) any {
 	return args
 }
 
+// TracedDriverName is the database/sql driver name registered by RegisterTracedDriver.
 const TracedDriverName = "sqlite3-traced"
 
 var registerOnce sync.Once
 
+// RegisterTracedDriver registers the traced SQLite driver once per process.
 func RegisterTracedDriver(tr *Tracer) {
 	registerOnce.Do(func() {
 		sql.Register(TracedDriverName, tracedDriver{

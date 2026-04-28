@@ -17,9 +17,11 @@ import (
 const apiURL = "https://api.anthropic.com/v1/messages"
 
 const (
+	// ModelHaiku is the default Claude Haiku model identifier used by this package.
 	ModelHaiku = "claude-haiku-4-5"
 )
 
+// MessageRequest describes a request to the Anthropic Messages API.
 type MessageRequest struct {
 	Model       string    `json:"-"`
 	MaxTokens   int       `json:"-"`
@@ -72,6 +74,7 @@ func (r MessageRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(plain(w))
 }
 
+// Message is a single role/content message sent to the model.
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
@@ -94,11 +97,13 @@ type usage struct {
 	CacheReadInputTokens     int `json:"cache_read_input_tokens"`
 }
 
+// Client calls the Anthropic Messages API.
 type Client struct {
 	apiKey     string
 	httpClient *http.Client
 }
 
+// New returns a Client using apiKey for Anthropic API authentication.
 func New(apiKey string) *Client {
 	return &Client{
 		apiKey:     apiKey,

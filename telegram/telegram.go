@@ -15,11 +15,13 @@ import (
 
 const apiBase = "https://api.telegram.org/bot"
 
+// Update is a Telegram getUpdates item.
 type Update struct {
 	UpdateID int      `json:"update_id"`
 	Message  *Message `json:"message"`
 }
 
+// Message is the message payload attached to a Telegram update.
 type Message struct {
 	MessageID int    `json:"message_id"`
 	Chat      Chat   `json:"chat"`
@@ -27,15 +29,18 @@ type Message struct {
 	Text      string `json:"text"`
 }
 
+// Chat identifies the Telegram chat where a message was sent.
 type Chat struct {
 	ID int64 `json:"id"`
 }
 
+// User identifies a Telegram user.
 type User struct {
 	ID       int64  `json:"id"`
 	Username string `json:"username"`
 }
 
+// Client is a Telegram Bot API client.
 type Client struct {
 	token      string
 	httpClient *http.Client

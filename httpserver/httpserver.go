@@ -84,6 +84,7 @@ func serveWithShutdown(ctx context.Context, srv *http.Server, ln net.Listener) e
 	}
 }
 
+// ErrResponse is the JSON shape written by WriteError.
 type ErrResponse struct {
 	Error string `json:"error"`
 }

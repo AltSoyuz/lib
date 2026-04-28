@@ -20,6 +20,7 @@ type migration struct {
 	sql  string
 }
 
+// Migrate applies SQL migrations from dir/migrations in ascending version order.
 func Migrate(ctx context.Context, db *sql.DB, dir fs.FS) error {
 	start := time.Now()
 

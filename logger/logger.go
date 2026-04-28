@@ -24,7 +24,8 @@ var (
 	mu       sync.Mutex
 )
 
-func Init() { // call after flag.Parse()
+// Init applies logger flags. Call it after flag parsing.
+func Init() {
 	initInternal()
 }
 
@@ -36,10 +37,19 @@ func initInternal() {
 	log.SetFlags(0)
 }
 
-func Info(msg string, kv ...any)  { printLogSkipframes(0, "INFO", msg, kv...) }
-func Warn(msg string, kv ...any)  { printLogSkipframes(0, "WARN", msg, kv...) }
+// Info logs an info-level message.
+func Info(msg string, kv ...any) { printLogSkipframes(0, "INFO", msg, kv...) }
+
+// Warn logs a warning-level message.
+func Warn(msg string, kv ...any) { printLogSkipframes(0, "WARN", msg, kv...) }
+
+// Error logs an error-level message.
 func Error(msg string, kv ...any) { printLogSkipframes(0, "ERROR", msg, kv...) }
+
+// Fatal logs a fatal-level message and exits the process.
 func Fatal(msg string, kv ...any) { printLogSkipframes(0, "FATAL", msg, kv...) }
+
+// Panic logs a panic-level message and panics.
 func Panic(msg string, kv ...any) { printLogSkipframes(0, "PANIC", msg, kv...) }
 
 // InfoSkipframes logs info message and skips the given number of frames for the caller.
@@ -69,6 +79,7 @@ func PanicSkipframes(skipframes int, msg string, kv ...any) {
 
 var stdErrorLogger = log.New(&logWriter{}, "", 0)
 
+// StdErrorLogger returns a stdlib logger that writes through Error.
 func StdErrorLogger() *log.Logger { return stdErrorLogger }
 
 type logWriter struct{}
@@ -179,6 +190,8 @@ func callerAt(skip int) string {
 	return fmt.Sprintf("%s:%d", file, line)
 }
 
-// Testing helpers
+// SetOutput changes the logger output writer.
 func SetOutput(w io.Writer) { mu.Lock(); out = w; log.SetOutput(out); mu.Unlock() }
-func ResetOutput()          { SetOutput(os.Stdout) }
+
+// ResetOutput restores stdout as the logger output writer.
+func ResetOutput() { SetOutput(os.Stdout) }

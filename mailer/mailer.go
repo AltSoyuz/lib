@@ -52,6 +52,11 @@ type initConfig struct {
 	resendAPIBaseURL string
 }
 
+// Init configures the process-wide mailer backend.
+//
+// Exactly one delivery backend may be configured: SMTP via smtpAddr, AWS SES
+// via region, or Resend via resendAPIKey. With no backend and no from address,
+// the mailer uses the blackhole backend.
 func Init(from, smtpAddr, smtpUsername, smtpPassword, region, resendAPIKey, resendAPIBaseURL string) {
 	cfg, err := buildConfig(from, smtpAddr, smtpUsername, smtpPassword, region, resendAPIKey, resendAPIBaseURL)
 	if err != nil {
@@ -171,8 +176,10 @@ func buildConfig(from, smtpAddr, smtpUsername, smtpPassword, region, resendAPIKe
 	return initConfig{mode: modeSES, from: from, region: region}, nil
 }
 
+// UseBlackHole switches delivery to the blackhole backend.
 func UseBlackHole() { curMode = modeBlackhole }
 
+// Send sends an email using the currently configured backend.
 func Send(ctx context.Context, to, subject, text, html string) error {
 	switch curMode {
 	case modeSMTP:
@@ -187,6 +194,7 @@ func Send(ctx context.Context, to, subject, text, html string) error {
 	}
 }
 
+// Addr returns a human-readable address for the configured backend.
 func Addr() string {
 	switch curMode {
 	case modeSMTP:
@@ -200,6 +208,7 @@ func Addr() string {
 	}
 }
 
+// LastError returns the last backend error recorded by Send.
 func LastError() string {
 	switch curMode {
 	case modeSMTP:
@@ -217,6 +226,7 @@ func LastError() string {
 	}
 }
 
+// Close releases mailer resources.
 func Close() {}
 
 type smtpSender struct {
@@ -520,6 +530,7 @@ func BuildVerifyURL(base, path, token string) (string, error) {
 	return u.String(), nil
 }
 
+// IsBlackhole reports whether the blackhole backend is active.
 func IsBlackhole() bool {
 	return curMode == modeBlackhole
 }

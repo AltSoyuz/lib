@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced package README documentation with godoc-first package comments.
+- Corrected package descriptions in repository and AI assistant documentation.
+
 ## [0.1.0]
 
 ### Added

@@ -21,6 +21,7 @@ import (
 )
 
 const (
+	// Cost is the bcrypt cost used by Hash.
 	Cost = 12
 
 	// FakeHash is a pre-computed bcrypt hash used for constant-time comparison

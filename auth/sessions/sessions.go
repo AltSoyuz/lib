@@ -16,6 +16,7 @@ import (
 )
 
 const (
+	// TTL is the default session lifetime.
 	TTL = 30 * 24 * time.Hour
 
 	cookieDev  = "sid"

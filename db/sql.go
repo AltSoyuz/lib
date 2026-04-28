@@ -8,10 +8,12 @@ import (
 	"github.com/mattn/go-sqlite3"
 )
 
+// NullableFloat returns a valid sql.NullFloat64 when v is non-zero.
 func NullableFloat(v float64) sql.NullFloat64 {
 	return sql.NullFloat64{Float64: v, Valid: v != 0}
 }
 
+// BoolToInt returns 1 for true and 0 for false.
 func BoolToInt(b bool) int64 {
 	if b {
 		return 1

@@ -6,9 +6,15 @@ package magiclinks
 import "time"
 
 const (
-	VerifyEmailTTL   = 24 * time.Hour
+	// VerifyEmailTTL is the default lifetime for verify-email magic links.
+	VerifyEmailTTL = 24 * time.Hour
+
+	// ResetPasswordTTL is the default lifetime for reset-password magic links.
 	ResetPasswordTTL = 15 * time.Minute
 
-	PurposeVerifyEmail   = "verify_email"
+	// PurposeVerifyEmail is the stable purpose string for verify-email tokens.
+	PurposeVerifyEmail = "verify_email"
+
+	// PurposeResetPassword is the stable purpose string for reset-password tokens.
 	PurposeResetPassword = "reset_password"
 )
