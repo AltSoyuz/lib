@@ -231,3 +231,89 @@ func TestIsLocalhost(t *testing.T) {
 		}
 	}
 }
+
+func TestParseAllowlistCSV(t *testing.T) {
+	got := ParseAllowlistCSV(" A@X.COM, b@y.com ,,A@x.com ")
+	if len(got) != 2 {
+		t.Fatalf("expected 2 unique emails, got %d", len(got))
+	}
+	if _, ok := got["a@x.com"]; !ok {
+		t.Fatalf("expected normalized allowlist to contain a@x.com")
+	}
+	if _, ok := got["b@y.com"]; !ok {
+		t.Fatalf("expected normalized allowlist to contain b@y.com")
+	}
+}
+
+func TestNewSessionPolicyDefaults(t *testing.T) {
+	p, err := NewSessionPolicy(0, 0, 0)
+	if err != nil {
+		t.Fatalf("expected defaults to be valid, got err: %v", err)
+	}
+	if p.TTL != DefaultSessionTTL || p.RefreshThreshold != DefaultSessionRefreshThreshold || p.AbsoluteTTL != DefaultSessionAbsoluteTTL {
+		t.Fatalf("unexpected defaults: %+v", p)
+	}
+}
+
+func TestNewSessionPolicyValidation(t *testing.T) {
+	if _, err := NewSessionPolicy(30*time.Minute, time.Minute, 24*time.Hour); err == nil {
+		t.Fatalf("expected error for short session TTL")
+	}
+	if _, err := NewSessionPolicy(2*time.Hour, 3*time.Hour, 24*time.Hour); err == nil {
+		t.Fatalf("expected error when refresh threshold exceeds TTL")
+	}
+	if _, err := NewSessionPolicy(8*time.Hour, 2*time.Hour, 6*time.Hour); err == nil {
+		t.Fatalf("expected error when absolute TTL is below session TTL")
+	}
+}
+
+func TestNextSessionExpiry(t *testing.T) {
+	now := time.Date(2026, 4, 29, 10, 0, 0, 0, time.UTC)
+	createdAt := now.Add(-2 * time.Hour)
+	policy := SessionPolicy{
+		TTL:              7 * 24 * time.Hour,
+		RefreshThreshold: 24 * time.Hour,
+		AbsoluteTTL:      30 * 24 * time.Hour,
+	}
+
+	t.Run("no refresh when far from expiry", func(t *testing.T) {
+		current := now.Add(48 * time.Hour)
+		_, ok := NextSessionExpiry(now, createdAt, current, policy)
+		if ok {
+			t.Fatalf("expected no refresh")
+		}
+	})
+
+	t.Run("refresh when near expiry", func(t *testing.T) {
+		current := now.Add(3 * time.Hour)
+		next, ok := NextSessionExpiry(now, createdAt, current, policy)
+		if !ok {
+			t.Fatalf("expected refresh")
+		}
+		if !next.After(current) {
+			t.Fatalf("expected next expiry to extend current expiry")
+		}
+	})
+
+	t.Run("cap at absolute TTL", func(t *testing.T) {
+		current := now.Add(2 * time.Hour)
+		created := now.Add(-29 * 24 * time.Hour)
+		next, ok := NextSessionExpiry(now, created, current, policy)
+		if !ok {
+			t.Fatalf("expected refresh")
+		}
+		want := created.Add(policy.AbsoluteTTL)
+		if !next.Equal(want) {
+			t.Fatalf("expected capped expiry %s, got %s", want, next)
+		}
+	})
+
+	t.Run("no refresh when cap does not extend", func(t *testing.T) {
+		created := now.Add(-29 * 24 * time.Hour)
+		current := created.Add(policy.AbsoluteTTL)
+		_, ok := NextSessionExpiry(now, created, current, policy)
+		if ok {
+			t.Fatalf("expected no refresh when capped expiry does not extend")
+		}
+	})
+}

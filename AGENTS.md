@@ -43,6 +43,7 @@ go build ./...
 | `logger` | Small structured logger. |
 | `mailer` | Blackhole, SMTP, AWS SES v2, Resend email. |
 | `oauthgoogle` | Placeholder Google OAuth provider API. |
+| `provision` | VM provisioning model, templates, renderers, and validation. |
 | `telegram` | Telegram Bot API client. |
 
 ## Release notes

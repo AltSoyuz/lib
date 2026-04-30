@@ -1,5 +1,5 @@
-// Package sessions provides session token generation, cookie helpers, and
-// request URL/host detection. Pure utility code, no DB.
+// Package sessions provides session token generation, cookie helpers, session
+// policy, and request URL/host detection. Pure utility code, no DB.
 package sessions
 
 import (
@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"net"
 	"net/http"
 	"strings"
@@ -196,4 +197,77 @@ func IsLocalhost(h string) bool {
 	default:
 		return false
 	}
+}
+
+const (
+	DefaultSessionTTL              = 7 * 24 * time.Hour
+	DefaultSessionRefreshThreshold = 24 * time.Hour
+	DefaultSessionAbsoluteTTL      = 30 * 24 * time.Hour
+	minSessionTTL                  = 1 * time.Hour
+	minSessionRefreshThreshold     = 5 * time.Minute
+)
+
+type SessionPolicy struct {
+	TTL              time.Duration
+	RefreshThreshold time.Duration
+	AbsoluteTTL      time.Duration
+}
+
+func NewSessionPolicy(sessionTTL, refreshThreshold, absoluteTTL time.Duration) (SessionPolicy, error) {
+	if sessionTTL <= 0 {
+		sessionTTL = DefaultSessionTTL
+	}
+	if refreshThreshold <= 0 {
+		refreshThreshold = DefaultSessionRefreshThreshold
+	}
+	if absoluteTTL <= 0 {
+		absoluteTTL = DefaultSessionAbsoluteTTL
+	}
+	if sessionTTL < minSessionTTL {
+		return SessionPolicy{}, fmt.Errorf("sessionTTL_too_short: got=%s min=%s", sessionTTL, minSessionTTL)
+	}
+	if refreshThreshold < minSessionRefreshThreshold {
+		return SessionPolicy{}, fmt.Errorf("sessionRefreshThreshold_too_short: got=%s min=%s", refreshThreshold, minSessionRefreshThreshold)
+	}
+	if refreshThreshold > sessionTTL {
+		return SessionPolicy{}, fmt.Errorf("sessionRefreshThreshold_exceeds_sessionTTL: refresh=%s ttl=%s", refreshThreshold, sessionTTL)
+	}
+	if absoluteTTL < sessionTTL {
+		return SessionPolicy{}, fmt.Errorf("sessionAbsoluteTTL_below_sessionTTL: absolute=%s ttl=%s", absoluteTTL, sessionTTL)
+	}
+	return SessionPolicy{
+		TTL:              sessionTTL,
+		RefreshThreshold: refreshThreshold,
+		AbsoluteTTL:      absoluteTTL,
+	}, nil
+}
+
+func NextSessionExpiry(now, createdAt, currentExpiry time.Time, policy SessionPolicy) (time.Time, bool) {
+	if currentExpiry.Sub(now) > policy.RefreshThreshold {
+		return time.Time{}, false
+	}
+	nextExpiry := now.Add(policy.TTL)
+	absoluteExpiry := createdAt.Add(policy.AbsoluteTTL)
+	if nextExpiry.After(absoluteExpiry) {
+		nextExpiry = absoluteExpiry
+	}
+	if !nextExpiry.After(currentExpiry) {
+		return time.Time{}, false
+	}
+	return nextExpiry, true
+}
+
+// ParseAllowlistCSV parses a comma-separated list of emails into a lowercase set.
+func ParseAllowlistCSV(csv string) map[string]struct{} {
+	if csv == "" {
+		return nil
+	}
+	out := make(map[string]struct{})
+	for _, p := range strings.Split(csv, ",") {
+		p = strings.ToLower(strings.TrimSpace(p))
+		if p != "" {
+			out[p] = struct{}{}
+		}
+	}
+	return out
 }
