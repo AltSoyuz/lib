@@ -42,7 +42,7 @@ go build ./...
 | `httpserver` | HTTP serving, JSON, IP, rate limit, UI helpers. |
 | `logger` | Small structured logger. |
 | `mailer` | Blackhole, SMTP, AWS SES v2, Resend email. |
-| `oauthgoogle` | Placeholder Google OAuth provider API. |
+| `oauthgoogle` | Google Sign-In OAuth provider (code flow + PKCE). |
 | `provision` | VM provisioning model, templates, renderers, and validation. |
 | `telegram` | Telegram Bot API client. |
 

@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3]
+
+### Added
+
+- `oauthgoogle`: working Google Sign-In implementation (authorization-code
+  flow with PKCE, stdlib only): `Config`, `New`, `Configure`, `NewState`,
+  `NewVerifier`, `ProviderName`; `Start` and `Callback` now perform the real
+  redirect and token exchange with ID token claim validation.
+
+### Changed
+
+- `oauthgoogle`: `Start` now returns an `error` (previously no return value).
+
 ## [0.1.2]
 
 ### Added
