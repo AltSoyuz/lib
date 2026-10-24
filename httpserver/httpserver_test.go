@@ -4,13 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/AltSoyuz/lib/logger"
 )
 
 func TestWrapHandlerWithBuiltins(t *testing.T) {
@@ -216,5 +220,32 @@ func TestServeGracefulShutdown(t *testing.T) {
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatal("serve did not return after cancel")
+	}
+}
+
+func TestWriteErrorClientCanceled(t *testing.T) {
+	var logs strings.Builder
+	logger.SetOutput(&logs)
+	t.Cleanup(func() { logger.SetOutput(os.Stderr) })
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	w := httptest.NewRecorder()
+	WriteError(w, httptest.NewRequest(http.MethodGet, "/api/v1/guide", nil).WithContext(ctx), http.StatusInternalServerError, fmt.Errorf("internal: %w", context.Canceled))
+	if w.Body.Len() != 0 {
+		t.Fatalf("a canceled request got a body: %q", w.Body.String())
+	}
+	if out := logs.String(); strings.Contains(out, " error ") || !strings.Contains(out, " info ") || !strings.Contains(out, "http request canceled by the client") || !strings.Contains(out, "path=/api/v1/guide") {
+		t.Fatalf("logs = %q", out)
+	}
+
+	// A request that ran out of time is the server's problem: it stays an error.
+	logs.Reset()
+	ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
+	defer cancel()
+	w = httptest.NewRecorder()
+	WriteError(w, httptest.NewRequest(http.MethodGet, "/slow", nil).WithContext(ctx), http.StatusInternalServerError, context.DeadlineExceeded)
+	if w.Code != http.StatusInternalServerError || !strings.Contains(logs.String(), " error ") {
+		t.Fatalf("deadline: status %d, logs %q", w.Code, logs.String())
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -110,8 +111,18 @@ func WriteJSON(w http.ResponseWriter, r *http.Request, status int, v any) {
 	_, _ = w.Write(buf.Bytes())
 }
 
-// WriteError writes an error response with the given status code and error message.
+// WriteError writes an error response with the given status code and error message, and logs it as an error.
+// A request its client canceled gets no response and an info line instead: the client is gone, the server did nothing wrong.
 func WriteError(w http.ResponseWriter, r *http.Request, status int, err error) {
+	// The client closed the request (a reload, a page left mid-load): nobody reads the answer, and it is no server fault.
+	if errors.Is(r.Context().Err(), context.Canceled) {
+		args := []any{"status", status, "method", r.Method, "path", r.URL.Path}
+		if err != nil {
+			args = append(args, "err", err.Error())
+		}
+		logger.Info("http request canceled by the client", args...)
+		return
+	}
 	msg := http.StatusText(status)
 	if err != nil {
 		msg = err.Error()
