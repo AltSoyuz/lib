@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4]
+
+### Changed
+
+- `httpserver`: `WriteError` no longer logs a request its client canceled (a reload, a page left
+  mid-load) as an error. It writes nothing, since nobody reads the answer, and logs an info line,
+  `http request canceled by the client`, with the status, method, path and error. A request whose
+  context ran out of time is still logged as an error.
+
 ## [0.1.3]
 
 ### Added
