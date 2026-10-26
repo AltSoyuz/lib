@@ -167,11 +167,15 @@ func TestWantsHTML(t *testing.T) {
 func TestServeSveltekitStaticFiles(t *testing.T) {
 	// Setup fake FS with various files
 	fsys := &fakeFS{files: map[string]string{
-		"index.html":          "<html>index</html>",
-		"about.html":          "<html>about</html>",
-		"foo.txt":             "plain",
-		"_app/immutable/x.js": "console.log(1)",
-		"200.html":            "<html>fallback</html>",
+		"index.html":                 "<html>index</html>",
+		"about.html":                 "<html>about</html>",
+		"foo.txt":                    "plain",
+		"_app/immutable/x.js":        "console.log(1)",
+		"200.html":                   "<html>fallback</html>",
+		"service-worker.js":          "self",
+		"_app/version.json":          "{}",
+		"manifest.webmanifest":       "{}",
+		"pwa/manifest-x.webmanifest": "{}",
 	}}
 	// Use a fileServer that just writes the file name for test visibility
 	fileServer := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -208,6 +212,28 @@ func TestServeSveltekitStaticFiles(t *testing.T) {
 		cc := resp.Header.Get("Cache-Control")
 		if !strings.Contains(cc, "immutable") {
 			t.Errorf("expected immutable cache header, got %q", cc)
+		}
+	})
+
+	t.Run("revalidates the files that announce a new version", func(t *testing.T) {
+		for path, ctype := range map[string]string{
+			"/service-worker.js":          "",
+			"/_app/version.json":          "",
+			"/manifest.webmanifest":       "application/manifest+json",
+			"/pwa/manifest-x.webmanifest": "application/manifest+json",
+		} {
+			w := httptest.NewRecorder()
+			handler.ServeHTTP(w, httptest.NewRequest("GET", path, nil))
+			resp := w.Result()
+			if resp.StatusCode != http.StatusOK {
+				t.Fatalf("%s: expected 200, got %d", path, resp.StatusCode)
+			}
+			if cc := resp.Header.Get("Cache-Control"); cc != "no-cache" {
+				t.Errorf("%s: expected Cache-Control no-cache, got %q", path, cc)
+			}
+			if ctype != "" && resp.Header.Get("Content-Type") != ctype {
+				t.Errorf("%s: expected Content-Type %q, got %q", path, ctype, resp.Header.Get("Content-Type"))
+			}
 		}
 	})
 

@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/`: the UI kit shared by the SvelteKit apps (tokens and base CSS, `Shell`, `TabBar`, `TitleBar`,
+  `Sheet`, PWA state, theme, API calls, service worker). Apps copy it into `ui/src/lib/kit/` from the lib
+  version in their `go.mod`; see `web/README.md`.
+
+### Changed
+
+- `httpserver`: `ServeSveltekitStaticFiles` answers `/service-worker.js`, `/_app/version.json` and
+  `*.webmanifest` with `Cache-Control: no-cache` (and the manifest content type), so an app always sees
+  its new version. Apps that set these headers themselves can drop that code.
+
 ## [0.1.4]
 
 ### Changed

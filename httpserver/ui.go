@@ -10,14 +10,21 @@ import (
 	"github.com/AltSoyuz/lib/logger"
 )
 
-// ServeSveltekitStaticFiles serves sveltekit static files from the given fs.FS with SPA fallback logic
+// ServeSveltekitStaticFiles serves sveltekit static files from the given fs.FS with SPA fallback logic.
+// Hashed assets under /_app/immutable/ are cached for a year; /service-worker.js, /_app/version.json
+// and *.webmanifest are revalidated on every load, since a stale copy hides a new version of the app.
 func ServeSveltekitStaticFiles(sub fs.FS, fileServer http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		urlPath := r.URL.Path
 
-		// Cache long-term only for SvelteKit assets
-		if strings.HasPrefix(urlPath, "/_app/immutable/") {
+		switch {
+		case strings.HasPrefix(urlPath, "/_app/immutable/"):
 			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+		case urlPath == "/service-worker.js", urlPath == "/_app/version.json":
+			w.Header().Set("Cache-Control", "no-cache")
+		case strings.HasSuffix(urlPath, ".webmanifest"):
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("Content-Type", "application/manifest+json")
 		}
 
 		// 1) serve the exact file if it exists

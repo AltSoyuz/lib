@@ -4,9 +4,11 @@ Short guide for AI coding assistants working on this repository.
 
 ## Scope
 
-This is a public Go library module: `github.com/AltSoyuz/lib`.
+This is a public Go library module: `github.com/AltSoyuz/lib`, plus `web/`, the UI kit the
+SvelteKit apps copy from the module (see `web/README.md`).
 
 - Keep it libraries-only: no `cmd/`, no app wiring, no product-specific code.
+- Supplier regime: compatibility is sacred, and something enters lib at its second real use in an app.
 - Keep packages small, explicit, and dependency-light.
 - Prefer godoc over package README files. The root README is the landing page.
 
@@ -17,6 +19,7 @@ go test -race -count=1 ./...
 go vet ./...
 staticcheck ./...   # if installed
 go build ./...
+node --test web/*.test.ts
 ```
 
 ## Rules
@@ -45,6 +48,7 @@ go build ./...
 | `oauthgoogle` | Google Sign-In OAuth provider (code flow + PKCE). |
 | `provision` | VM provisioning model, templates, renderers, and validation. |
 | `telegram` | Telegram Bot API client. |
+| `web/` | UI kit (CSS, Svelte, TS) copied by the apps, not a Go package. |
 
 ## Release notes
 

@@ -30,6 +30,7 @@ top-level directory is an importable package unless documented otherwise.
 | [`mailer`](./mailer) | Email delivery through blackhole, SMTP, AWS SES v2, or Resend, plus verification URL helper. |
 | [`oauthgoogle`](./oauthgoogle) | Placeholder Google OAuth provider API that currently reports not available. |
 | [`telegram`](./telegram) | Telegram Bot API client for allowed-user checks, sending messages, polling updates, and command parsing. |
+| [`web`](./web) | UI kit for the SvelteKit apps, copied from the module into each app (not a Go package). |
 
 ## Install
 
