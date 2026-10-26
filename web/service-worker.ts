@@ -1,11 +1,40 @@
-/// <reference types="@sveltejs/kit" />
-/// <reference no-default-lib="true"/>
-/// <reference lib="esnext" />
-/// <reference lib="webworker" />
-
 import { build, files, version } from '$service-worker';
 
-const sw = self as unknown as ServiceWorkerGlobalScope;
+// The worker types this file needs, declared here: it lives in src/lib, type-checked with the pages (DOM lib, no webworker lib).
+interface ExtendableEvent extends Event {
+	waitUntil(p: Promise<unknown>): void;
+}
+interface FetchEvent extends ExtendableEvent {
+	request: Request;
+	respondWith(r: Promise<Response>): void;
+}
+interface PushEvent extends ExtendableEvent {
+	data: { json(): unknown; text(): string } | null;
+}
+interface NotificationEvent extends ExtendableEvent {
+	notification: Notification;
+}
+interface WindowClient {
+	url: string;
+	focus(): Promise<WindowClient>;
+	navigate(url: string): Promise<WindowClient | null>;
+}
+interface WorkerScope {
+	location: Location;
+	registration: ServiceWorkerRegistration;
+	clients: {
+		claim(): Promise<void>;
+		matchAll(o: { type: 'window'; includeUncontrolled: boolean }): Promise<WindowClient[]>;
+		openWindow(url: string): Promise<WindowClient | null>;
+	};
+	skipWaiting(): Promise<void>;
+	addEventListener(type: 'install' | 'activate', fn: (e: ExtendableEvent) => void): void;
+	addEventListener(type: 'fetch', fn: (e: FetchEvent) => void): void;
+	addEventListener(type: 'push', fn: (e: PushEvent) => void): void;
+	addEventListener(type: 'notificationclick', fn: (e: NotificationEvent) => void): void;
+}
+
+const sw = self as unknown as WorkerScope;
 
 const CACHE = `shell-${version}`;
 const SHELL = '/200.html';
@@ -56,7 +85,7 @@ export function serve(app: { name: string; icon: string }) {
 	sw.addEventListener('push', (event) => {
 		let m: { title?: string; body?: string; url?: string; tag?: string } = {};
 		try {
-			m = event.data?.json() ?? {};
+			m = (event.data?.json() as typeof m | undefined) ?? {};
 		} catch {
 			m = { body: event.data?.text() };
 		}
