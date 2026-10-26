@@ -5,11 +5,10 @@
 	// The account counts; children adds the app's own rows to the list.
 	let { stats, children }: { stats: AccountStats; children?: Snippet } = $props();
 
-	const plural = (n: number, one: string) => `${n} ${one}${n === 1 ? '' : 's'}`;
+	// "role: n", not a plural: a role name is the app's own word ("2 staffs" would be wrong).
 	let roles = $derived(
 		Object.entries(stats.by_role)
-			.sort(([a], [b]) => a.localeCompare(b))
-			.map(([role, n]) => plural(n, role))
+			.map(([role, n]) => `${role}: ${n}`)
 			.join(', ')
 	);
 </script>

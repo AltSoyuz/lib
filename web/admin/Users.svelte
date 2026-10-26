@@ -5,8 +5,8 @@
 	import { approve, impersonate, restrain, setRole, unrestrain, whenShort, type AdminUser } from './admin';
 
 	// The accounts for an admin: pending ones first with Approve, then a sheet per account where a change applies at
-	// once (role, access, View as). avatar, detail and sheet add the app's own: a picture, facts in the row, rows of
-	// the sheet. onviewas runs once View as started, to reload the app as the other account.
+	// once (role, access, View as). avatar, detail, sheet and footer add the app's own: a picture, facts in the row,
+	// rows of the sheet, text after the counts. onviewas runs once View as started, to reload the app as the other account.
 	let {
 		users,
 		roles,
@@ -15,7 +15,8 @@
 		onviewas,
 		avatar,
 		detail,
-		sheet
+		sheet,
+		footer
 	}: {
 		users: AdminUser[];
 		roles: string[];
@@ -25,6 +26,7 @@
 		avatar?: Snippet<[AdminUser, boolean]>;
 		detail?: Snippet<[AdminUser]>;
 		sheet?: Snippet<[AdminUser]>;
+		footer?: Snippet;
 	} = $props();
 
 	const messages: Record<string, string> = {
@@ -124,8 +126,9 @@
 		{/each}
 	</ul>
 	<p class="footer">
-		Users: {users.length}. Connected right now: {connected}.{#if waiting}
-			Waiting for approval: {waiting}.{/if}
+		Users: {users.length}. Connected right now: {connected}.
+		{#if waiting}Waiting for approval: {waiting}.{/if}
+		{@render footer?.()}
 	</p>
 </section>
 
