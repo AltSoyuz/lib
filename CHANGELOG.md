@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1]
+
+### Fixed
+
+- `web/TitleBar.svelte`: an inline title bar starts at the height of a large title (`--page-top`), below the blur
+  iOS draws under the status bar of a home screen app; it sat 16 points higher, in that blur.
+
 ## [0.3.0]
 
 ### Added
