@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2]
+
+### Fixed
+
+- `web/Sheet.svelte`: a sheet's top stays below the large title line (`--page-top` plus 16px) instead of 10px under
+  the status bar, out of the blur iOS draws there in a home screen app.
+
 ## [0.3.1]
 
 ### Fixed
