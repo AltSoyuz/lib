@@ -94,13 +94,13 @@
 		margin-top: var(--space-3);
 	}
 
-	/* Above the layout's status strip, which it replaces: opaque, a hairline once the page scrolls under it. */
+	/* Opaque over the status strip it replaces; its title starts at a large title's height, below the blur iOS draws under the status bar. */
 	.inline {
 		position: sticky;
 		top: 0;
 		z-index: 21;
 		margin: calc(-1 * var(--page-top)) calc(-1 * var(--space-4)) var(--space-4);
-		padding: calc(var(--safe-top) + var(--space-2)) var(--space-4) var(--space-1);
+		padding: var(--page-top) var(--space-4) var(--space-1);
 		border-bottom: var(--hairline) solid transparent;
 		background: var(--background);
 	}
