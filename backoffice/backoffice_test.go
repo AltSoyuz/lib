@@ -177,6 +177,17 @@ func TestApprovalKeepsNewAccountsPendingUntilAnAdminApproves(t *testing.T) {
 	if w := a.call("POST", "/api/v1/admin/users/"+u.ID+"/approve", nil, admin); w.Code != http.StatusConflict {
 		t.Fatalf("expected 409 not_pending on a second approval, got %d body=%s", w.Code, w.Body)
 	}
+	// Restricted after its approval, the account is restricted, not waiting again: its next sign-in is refused.
+	if w := a.call("POST", "/api/v1/admin/users/"+u.ID+"/restrain", nil, admin); w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d body=%s", w.Code, w.Body)
+	}
+	err := a.bo.inTx(context.Background(), func(tx *sql.Tx) error {
+		_, _, err := a.bo.Admit(context.Background(), tx, "new@example.com", time.Now())
+		return err
+	})
+	if err != ErrRestrained {
+		t.Fatalf("expected ErrRestrained for an approved then restricted account, got %v", err)
+	}
 }
 
 func TestRestrainRevokesSessionsAndRefusesTheNextSignIn(t *testing.T) {

@@ -90,6 +90,10 @@
 		margin: var(--space-3) 0 0;
 	}
 
+	.page-header :global(.banner + :not(.banner)) {
+		margin-top: var(--space-3);
+	}
+
 	/* Above the layout's status strip, which it replaces: opaque, a hairline once the page scrolls under it. */
 	.inline {
 		position: sticky;

@@ -210,7 +210,7 @@ func (b *Backoffice) handleRestrain(w http.ResponseWriter, r *http.Request) {
 				return errCannotModifyLastAdmin
 			}
 		}
-		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET access_state = ? WHERE id = ?`, AccessRestrained, id); err != nil {
+		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET access_state = ?, pending_since = NULL WHERE id = ?`, AccessRestrained, id); err != nil {
 			return fmt.Errorf("cannot restrain %s: %w", id, err)
 		}
 		if _, err := tx.ExecContext(r.Context(), `UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL`, nowStr, id); err != nil {
@@ -261,7 +261,7 @@ func (b *Backoffice) activate(w http.ResponseWriter, r *http.Request, pendingOnl
 		if u.AccessState == AccessActive {
 			return nil
 		}
-		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET access_state = ? WHERE id = ?`, AccessActive, id); err != nil {
+		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET access_state = ?, pending_since = NULL WHERE id = ?`, AccessActive, id); err != nil {
 			return fmt.Errorf("cannot make %s active: %w", id, err)
 		}
 		if wasPending {
