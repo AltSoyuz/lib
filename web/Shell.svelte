@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import './pwa.svelte';
 
 	// The frame of every page: .app is what pwa.svelte.ts remeasures after the keyboard; floating holds the tab bar and other fixed controls.
 	let {
