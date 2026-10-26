@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0]
+
 ### Added
 
 - `web/`: the UI kit shared by the SvelteKit apps (tokens and base CSS, `Shell`, `TabBar`, `TitleBar`,
-  `Sheet`, PWA state, theme, API calls, service worker). Apps copy it into `ui/src/lib/kit/` from the lib
+  `Sheet`, PWA state, theme, API calls, service worker). Apps copy it into their `src/lib/kit/` from the lib
   version in their `go.mod`; see `web/README.md`.
 
 ### Changed
