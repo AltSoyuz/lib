@@ -37,7 +37,9 @@ node --test web/*.test.ts
 
 | Package | Purpose |
 |---|---|
+| `audit` | Audit log: write in the change's transaction, list for a back office. |
 | `auth` | Auth subpackages and SQL artefacts. |
+| `backoffice` | Accounts, access, session check, admin routes, View as, announcement, account stats. |
 | `buildinfo` | Version flag and build metric. |
 | `claude` | Anthropic Messages API client. |
 | `db` | `database/sql` helpers, migrations, tracing. |

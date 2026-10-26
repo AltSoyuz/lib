@@ -20,7 +20,9 @@ top-level directory is an importable package unless documented otherwise.
 
 | Package | Purpose |
 |---------|---------|
+| [`audit`](./audit) | Audit log of an app: who changed what, written in the transaction of the change, paged for a back office. |
 | [`auth`](./auth) | Authentication subpackages and SQL artefacts: passwords, sessions, magic links, schema. |
+| [`backoffice`](./backoffice) | The back office the apps share: roles and access, the session check, admin routes, View as, announcement, account stats. |
 | [`buildinfo`](./buildinfo) | Version flag handling and build info metric registration through `-ldflags`. |
 | [`claude`](./claude) | Minimal Anthropic Messages API client with normal and streaming completions. |
 | [`db`](./db) | `database/sql` helpers: null conversion, SQLite uniqueness checks, migrations, transactions, and tracing. |

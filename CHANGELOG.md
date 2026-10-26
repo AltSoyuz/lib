@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `audit`: who changed what, in an app's `audit_events` table (`audit/schema.sql`): `Write` in the transaction of
+  the change, `After` once it committed, `List` and `Since` for a back office, the account action codes.
+- `backoffice`: the back office the apps share, on lib's auth tables plus `backoffice/schema.sql` (role, access
+  state, pending_since, View as sessions, the announcement): `Check`/`CheckAllowPending`/`RequireAdmin` on every
+  request (pending accounts get 403 `access_pending`, a View as is read only), `Admit` and `AuditSignIn` for an
+  app's sign-in flows, `EndSession` for sign out, `MeOf` for `/me`, and `Mount` for `/api/v1/admin/*` (accounts,
+  roles, restrict, approve, View as, announcement, audit log, account stats).
+- `web/admin/`: the UI of the back office (accounts, announcement, audit log, stats, pending page, View as banner).
+
 ## [0.2.0]
 
 ### Added

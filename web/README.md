@@ -26,6 +26,7 @@ kit-check:  # in make check: the copy is never edited by hand
 | `api.ts` | `request()` for JSON calls to the app's API, `HttpError`, `errorText()`. |
 | `service-worker.ts` | Offline shell, precache, push notifications: `serve({ name, icon })` from `src/service-worker.ts`. |
 | `viewport.ts` | Pure helper of the viewport fix, tested with `node --test`. |
+| `admin/` | The back office of lib's `backoffice` package: `admin.ts` (API, types, account labels), `Users`, `Announcement`, `AnnouncementBanner`, `AuditLog`, `Stats`, `PendingAccess`, `ViewingAs`. An app composes its `/admin` page from them and adds its own tabs. |
 
 ## Rules
 
