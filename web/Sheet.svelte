@@ -165,7 +165,8 @@
 		inset: auto 0 0;
 		width: 100%;
 		max-width: none;
-		height: calc(100% - var(--safe-top) - 10px);
+		/* Its top stays below the large title line, out of the blur iOS draws under the status bar. */
+		height: calc(100% - var(--page-top) - var(--space-4));
 		max-height: none;
 		margin: 0;
 		padding: 0;
