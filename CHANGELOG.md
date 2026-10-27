@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.6]
+
 ### Fixed
 
 - `web/TabBar.svelte`: on a phone, a long label (compass's Recordings among five tabs) crossed the round corners of
