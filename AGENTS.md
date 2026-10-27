@@ -71,15 +71,15 @@ node --test web/*.test.ts
 | `logger` | Small structured logger. |
 | `mailer` | Blackhole, SMTP, AWS SES v2, Resend email. |
 | `oauthgoogle` | Google Sign-In OAuth provider (code flow + PKCE). |
-| `provision` | VM provisioning model, templates, renderers, and validation. |
 | `telegram` | Telegram Bot API client. |
 | `web/` | UI kit (CSS, Svelte, TS) copied by the apps, not a Go package. |
 
 ## Release notes
 
-Move `CHANGELOG.md` entries from `[Unreleased]` to the target version, then tag:
+Put the `[Unreleased]` entries under a new `## [X.Y.Z]` heading, commit it as `release: vX.Y.Z`, then tag that
+commit with a lightweight tag, like every lib tag so far:
 
 ```sh
-git tag -s vX.Y.Z -m "vX.Y.Z"
+git tag vX.Y.Z
 git push origin main vX.Y.Z
 ```
