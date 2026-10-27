@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.4]
+
 ### Fixed
 
 - `web/Sheet.svelte`, `web/app.css`: in light mode, an open sheet left a light band fading into its backdrop at the top
