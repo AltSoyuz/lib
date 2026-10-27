@@ -34,4 +34,6 @@ kit-check:  # in make check: the copy is never edited by hand
 - Icons are the app's: a component with `<svelte:options namespace="svg" />` rendering paths for a name, passed
   to `TabBar` as the `icon` snippet.
 - Something enters the kit when a second app uses it; until then it stays in the app.
-- Compatibility as for the Go packages: a change that breaks an app is a new minor version, named in CHANGELOG.md.
+- Compatibility as for the Go packages: a change that breaks an app is a new minor version, named in CHANGELOG.md,
+  and ships with the migration of the apps that copy the kit.
+- What still moves (the layout under iOS) is tuned in one app and enters the kit once validated on an iPhone.

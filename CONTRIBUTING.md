@@ -8,7 +8,8 @@ Thanks for your interest in contributing to `github.com/AltSoyuz/lib`.
    in the PR description. Prefer the standard library.
 2. **Don't break the public API silently.** Renames, signature changes, or
    removed exports require an entry under `## [Unreleased]` in `CHANGELOG.md`
-   and will trigger a minor (pre-1.0) or major (post-1.0) version bump.
+   and will trigger a minor (pre-1.0) or major (post-1.0) version bump. The
+   apps that follow lib are migrated in the same pass (README, Philosophy).
 3. **Tests are required.** New behavior comes with `*_test.go`. Bug fixes come
    with a regression test.
 4. **No god packages.** If a package starts doing two unrelated things, split
