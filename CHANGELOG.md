@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3]
+
+### Fixed
+
+- `httpserver.ServeSveltekitStaticFiles`: a missing file under `/_app/immutable/` answers 404 with
+  `Cache-Control: no-store` instead of inheriting the year-long immutable cache of the hashed assets. A client that
+  asked for a file of the previous build during a deploy kept that 404 for a year, a white screen on every launch.
+
 ## [0.3.2]
 
 ### Fixed
