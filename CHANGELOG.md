@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/TabBar.svelte`: on a phone, a long label (compass's Recordings among five tabs) crossed the round corners of
+  the selected tab's pill. Labels are 10px, the size of an iOS tab bar's, and a tab is never narrower than its label
+  plus the 8px the pill's corners take on each side at the label's baseline; the other tabs share the rest.
+
 ## [0.3.5]
 
 ### Security

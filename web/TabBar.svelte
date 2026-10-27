@@ -65,12 +65,14 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1px;
-		min-width: 0;
+		/* The pill's round corners cut about 8px into each side at the label's baseline: a tab never gets narrower than its label plus that. */
+		padding: 0 8px;
 		border-radius: var(--radius-pill);
 		color: var(--foreground);
-		font-size: 11px;
+		font-size: 10px;
 		font-weight: 500;
-		line-height: 13px;
+		line-height: 12px;
+		white-space: nowrap;
 		text-decoration: none;
 		touch-action: manipulation;
 		transition:
