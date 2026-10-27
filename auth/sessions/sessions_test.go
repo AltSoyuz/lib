@@ -99,6 +99,37 @@ func TestSetCookie(t *testing.T) {
 	})
 }
 
+func TestReadCookie(t *testing.T) {
+	f := func(url string, cookies map[string]string, want string) {
+		t.Helper()
+		req := httptest.NewRequest(http.MethodGet, url, nil)
+		for name, value := range cookies {
+			req.AddCookie(&http.Cookie{Name: name, Value: value})
+		}
+		got, err := ReadCookie(req)
+		if want == "" {
+			if err != http.ErrNoCookie {
+				t.Fatalf("ReadCookie(%s, %v) = %q, %v; want ErrNoCookie", url, cookies, got, err)
+			}
+			return
+		}
+		if err != nil || got != want {
+			t.Fatalf("ReadCookie(%s, %v) = %q, %v; want %q", url, cookies, got, err, want)
+		}
+	}
+
+	// HTTPS: a sid cookie planted from a sibling subdomain is never read.
+	f("https://app.example.com/", map[string]string{"sid": "planted"}, "")
+	f("https://app.example.com/", map[string]string{"sid": "planted", "__Host-session": "own"}, "own")
+	f("https://app.example.com/", map[string]string{"__Host-session": "own"}, "own")
+
+	// Plain HTTP or localhost: sid is the cookie SetCookie writes.
+	f("http://app.example.com/", map[string]string{"sid": "own"}, "own")
+	f("https://localhost/", map[string]string{"sid": "own"}, "own")
+	f("http://app.example.com/", map[string]string{"__Host-session": "own"}, "own")
+	f("http://app.example.com/", nil, "")
+}
+
 func TestRequestBaseURL(t *testing.T) {
 	f := func(req *http.Request, want string) {
 		t.Helper()

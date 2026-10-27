@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- `auth/sessions.ReadCookie`: on HTTPS outside localhost, where `SetCookie` writes `__Host-session`, it reads only
+  that cookie and no longer falls back to `sid`. A page on any sibling subdomain can set a `sid` cookie for the parent
+  domain, and the fallback let it sign a signed-out visitor into the page owner's account. A `__Host-` cookie cannot
+  be set from another host. Over plain HTTP and on localhost nothing changes.
+
 ## [0.3.4]
 
 ### Fixed

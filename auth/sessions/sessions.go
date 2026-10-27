@@ -74,17 +74,18 @@ func SetCookie(w http.ResponseWriter, r *http.Request, token string, exp time.Ti
 	})
 }
 
-// ReadCookie returns the raw session cookie value, falling back across
-// dev/prod cookie names.
+// ReadCookie returns the raw session cookie value. Where SetCookie writes the
+// __Host- cookie, that is the only one read: any sibling subdomain can plant a
+// plain sid cookie, never a __Host- one.
 func ReadCookie(r *http.Request) (string, error) {
-	if c, err := r.Cookie(pickCookieName(r)); err == nil && c.Value != "" {
+	name := pickCookieName(r)
+	if c, err := r.Cookie(name); err == nil && c.Value != "" {
 		return c.Value, nil
 	}
-	if c, err := r.Cookie(cookieDev); err == nil && c.Value != "" {
-		return c.Value, nil
-	}
-	if c, err := r.Cookie(cookieProd); err == nil && c.Value != "" {
-		return c.Value, nil
+	if name == cookieDev {
+		if c, err := r.Cookie(cookieProd); err == nil && c.Value != "" {
+			return c.Value, nil
+		}
 	}
 	return "", http.ErrNoCookie
 }
