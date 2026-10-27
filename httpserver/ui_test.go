@@ -215,6 +215,18 @@ func TestServeSveltekitStaticFiles(t *testing.T) {
 		}
 	})
 
+	t.Run("does not cache a missing immutable asset", func(t *testing.T) {
+		w := httptest.NewRecorder()
+		handler.ServeHTTP(w, httptest.NewRequest("GET", "/_app/immutable/gone.js", nil))
+		resp := w.Result()
+		if resp.StatusCode != http.StatusNotFound {
+			t.Fatalf("expected 404, got %d", resp.StatusCode)
+		}
+		if cc := resp.Header.Get("Cache-Control"); cc != "no-store" {
+			t.Errorf("expected Cache-Control no-store on a missing asset, got %q", cc)
+		}
+	})
+
 	t.Run("revalidates the files that announce a new version", func(t *testing.T) {
 		for path, ctype := range map[string]string{
 			"/service-worker.js":          "",

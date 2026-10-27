@@ -65,6 +65,8 @@ func ServeSveltekitStaticFiles(sub fs.FS, fileServer http.Handler) http.HandlerF
 			return
 		}
 
+		// A missing hashed asset must not keep its year of cache: a client caught by a deploy would stay broken.
+		w.Header().Set("Cache-Control", "no-store")
 		http.NotFound(w, r)
 	}
 }
