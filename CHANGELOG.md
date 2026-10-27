@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.5]
+
 ### Security
 
 - `auth/sessions.ReadCookie`: on HTTPS outside localhost, where `SetCookie` writes `__Host-session`, it reads only
