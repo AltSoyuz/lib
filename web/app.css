@@ -26,6 +26,8 @@
 	--sheet: var(--gray-6);
 	--sheet-card: var(--gray-5);
 	--sheet-card-pressed: var(--gray-3);
+	/* The page under a sheet's backdrop, black at 55 %. */
+	--dimmed: color-mix(in srgb, var(--background) 45%, #000);
 	--muted-foreground: rgb(235 235 245 / 60%);
 	--faint: rgb(235 235 245 / 30%);
 	--primary: var(--brand-500);
@@ -180,6 +182,17 @@ body {
 
 :root:has(dialog[open]) {
 	overflow: hidden;
+}
+
+/* iOS tints the blur under the status bar from the opaque strip at the top, never from a backdrop: under a sheet, the strip
+   turns the dimmed page's color and the backdrop starts below it. */
+:root:has(dialog.sheet[open]) .status-bar {
+	background: var(--dimmed);
+	transition: background-color 340ms ease;
+}
+
+:root:has(dialog.sheet[open]) .page-header.inline {
+	background: linear-gradient(var(--dimmed) var(--safe-top), var(--background) 0);
 }
 
 .page {

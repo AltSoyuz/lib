@@ -102,6 +102,7 @@
 
 <dialog
 	bind:this={dialog}
+	class="sheet"
 	tabindex="-1"
 	class:closing
 	class:pulling
@@ -188,6 +189,7 @@
 	}
 
 	dialog::backdrop {
+		top: var(--safe-top);
 		background: rgb(0 0 0 / 55%);
 		animation: fade-in 340ms ease;
 	}

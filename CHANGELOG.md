@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/Sheet.svelte`, `web/app.css`: in light mode, an open sheet left a light band fading into its backdrop at the top
+  of an iPhone home screen app. iOS tints the blur it draws under the status bar from the opaque strip at the top,
+  never from the backdrop, so it kept the undimmed page's color. While a sheet is open, the status bar strip (and the
+  top of an inline title bar) takes `--dimmed`, the page's color under the backdrop, and the backdrop starts below
+  the strip. The sheet's `<dialog>` has the class `sheet`.
+
 ## [0.3.3]
 
 ### Fixed
