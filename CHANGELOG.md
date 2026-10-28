@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/Shell.svelte`: in an iPhone home screen app, a page left while its field still had the keyboard (a sheet's
+  Save that navigates, a sign-in code) kept the viewport the keyboard had shortened, so the tab bar and the other
+  fixed controls sat too high over an empty band. WebKit sends no focusout for a field that leaves with its page, the
+  cue `pwa.svelte.ts` remeasures on; the shell now blurs the focused field in `beforeNavigate`, as a native app
+  closes its keyboard. Tuned in compass (v0.7.35) and checked on an iPhone. The shell imports `$app/navigation`.
+
 ## [0.3.6]
 
 ### Fixed

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { beforeNavigate } from '$app/navigation';
 	import './pwa.svelte';
 
 	// The frame of every page: .app is what pwa.svelte.ts remeasures after the keyboard; floating holds the tab bar and other fixed controls.
@@ -16,6 +17,12 @@
 	} = $props();
 
 	let scrollY = $state(0);
+
+	// WebKit sends no focusout for a field leaving with its page, the cue pwa.svelte.ts remeasures a viewport the keyboard left short on.
+	beforeNavigate(() => {
+		const f = document.activeElement;
+		if (f instanceof HTMLInputElement || f instanceof HTMLTextAreaElement || f instanceof HTMLSelectElement) f.blur();
+	});
 </script>
 
 <svelte:window bind:scrollY />
