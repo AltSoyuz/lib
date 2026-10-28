@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.7]
+
 ### Fixed
 
 - `web/Shell.svelte`: in an iPhone home screen app, a page left while its field still had the keyboard (a sheet's
