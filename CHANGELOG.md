@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `web/app.css`: chips are the filter chips of Apple's iOS 26 apps, measured on Shazam's library: 44px capsules 10px
+  apart, body text, on `--chip` (a new token, lighter than the page in dark mode, white in light mode) instead of a
+  34px fill. A chip of `.chip-row` is a button or a label, the latter over an invisible `<select>` for a menu.
+
 ## [0.4.1]
 
 ### Fixed
