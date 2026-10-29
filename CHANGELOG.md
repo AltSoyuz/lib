@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/TitleBar.svelte`: the controls under a title (a search field, a segmented control) start 8px below the bar,
+  19 points under the title's baseline as in Shazam. A 44px glass button of the bar touched the search field below
+  it on an iPhone. A title bar without controls keeps its height.
+
 ## [0.4.0]
 
 ### Added

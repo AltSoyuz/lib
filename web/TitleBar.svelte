@@ -54,7 +54,9 @@
 			<button type="button" class="tinted" onclick={() => location.reload()}>Reload</button>
 		</div>
 	{/if}
-	{@render children?.()}
+	{#if children}
+		<div class="controls">{@render children()}</div>
+	{/if}
 </header>
 
 <style>
@@ -91,6 +93,15 @@
 	.trail :global(.filled) {
 		min-height: var(--control-height);
 		padding: 0 var(--space-4);
+	}
+
+	/* 19 points from the title's baseline to a search field, as in Shazam: a 44px button of the bar touches it otherwise. */
+	.controls {
+		margin-top: var(--space-2);
+	}
+
+	.controls:empty {
+		display: none;
 	}
 
 	.page-header :global(.banner) {
