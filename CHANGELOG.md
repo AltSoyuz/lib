@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0]
+
 ### Added
 
 - `web/app.css`: `.glass`, a button on Liquid Glass for the controls of a bar, a sheet's header or a screen's
