@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1]
+
 ### Fixed
 
 - `web/TitleBar.svelte`: the controls under a title (a search field, a segmented control) start 8px below the bar,
