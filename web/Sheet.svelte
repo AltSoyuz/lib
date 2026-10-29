@@ -134,15 +134,15 @@
 		<header>
 			<div class="lead">
 				{#if onsave}
-					<button type="button" onclick={requestClose} disabled={busy}>{dirty ? 'Cancel' : 'Close'}</button>
+					<button type="button" class="glass" onclick={requestClose} disabled={busy}>{dirty ? 'Cancel' : 'Close'}</button>
 				{/if}
 			</div>
 			<h2 id="{id}-title">{title}</h2>
 			<div class="trail">
 				{#if onsave}
-					<button type="submit" class="save" disabled={!canSave || busy}>{busy ? 'Saving…' : saveLabel}</button>
+					<button type="submit" class="save filled" disabled={!canSave || busy}>{busy ? 'Saving…' : saveLabel}</button>
 				{:else}
-					<button type="button" class="close" aria-label="Close" onclick={requestClose}>
+					<button type="button" class="close glass round" aria-label="Close" onclick={requestClose}>
 						<svg viewBox="0 0 30 30" aria-hidden="true"><path d="M10.5 10.5l9 9m0-9-9 9" /></svg>
 					</button>
 				{/if}
@@ -255,38 +255,9 @@
 		text-overflow: ellipsis;
 	}
 
-	header button {
-		min-width: var(--control-height);
-		padding: 0 var(--space-4);
-		border-radius: var(--radius-pill);
-	}
-
-	.lead button,
-	.close {
-		border: var(--hairline) solid var(--glass-edge);
-		background: var(--glass);
-		box-shadow: var(--glass-shadow-sm);
-		color: var(--foreground);
-	}
-
-	.lead button:disabled {
-		color: var(--faint);
-	}
-
 	.save {
-		background: var(--primary);
-		color: var(--primary-foreground);
-		font-weight: 600;
-	}
-
-	.save:disabled {
-		background: var(--fill);
-		color: var(--faint);
-	}
-
-	.close {
-		width: var(--control-height);
-		padding: 0;
+		min-height: var(--control-height);
+		padding: 0 var(--space-4);
 	}
 
 	.close svg {

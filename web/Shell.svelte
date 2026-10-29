@@ -54,12 +54,26 @@
 		right: 0;
 		left: 0;
 		height: var(--safe-top);
-		/* min(): no line where the page does not draw under a status bar. */
-		border-bottom: min(var(--hairline), var(--safe-top)) solid transparent;
 		background: var(--background);
 	}
 
-	.scrolled .status-bar {
-		border-bottom-color: var(--separator);
+	/* Content scrolls under a soft edge, as in iOS 26, not under a line; min(): none where there is no status bar. */
+	.status-bar::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		right: 0;
+		left: 0;
+		height: min(var(--space-5), var(--safe-top));
+		background: inherit;
+		-webkit-mask: linear-gradient(#000, transparent);
+		mask: linear-gradient(#000, transparent);
+		opacity: 0;
+		transition: opacity 200ms ease;
+		pointer-events: none;
+	}
+
+	.scrolled .status-bar::after {
+		opacity: 1;
 	}
 </style>

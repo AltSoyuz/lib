@@ -16,7 +16,7 @@ kit-check:  # in make check: the copy is never edited by hand
 
 | File | What |
 |---|---|
-| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, buttons (`.filled`, `.tinted`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`. |
+| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, buttons (`.filled`, `.tinted`, `.glass`, `.round`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`. |
 | `Shell.svelte` | The page frame: `.app`, the opaque status bar strip, `main.page`, a `floating` snippet for the tab bar. |
 | `TabBar.svelte` | Floating capsule on a phone, sidebar from 1024px. Needs `.tabbed` on the shell. |
 | `TitleBar.svelte` | Large or inline title, back button, `trailing` and `banners` snippets, then the offline and new version banners. |

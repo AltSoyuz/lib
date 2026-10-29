@@ -28,7 +28,7 @@
 <header class="page-header" class:inline>
 	<div class="bar">
 		{#if back}
-			<button type="button" class="back" aria-label="Back to {back.label}" onclick={back.onclick}>
+			<button type="button" class="back glass round" aria-label="Back to {back.label}" onclick={back.onclick}>
 				<svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg>
 			</button>
 		{/if}
@@ -59,7 +59,7 @@
 
 <style>
 	.page-header {
-		margin: 0 0 var(--space-3);
+		margin: 0 0 var(--space-4);
 	}
 
 	.bar {
@@ -84,6 +84,13 @@
 		display: flex;
 		flex: none;
 		align-items: center;
+		gap: var(--space-2);
+	}
+
+	/* A main action (Save, Done) keeps the height of the controls beside it. */
+	.trail :global(.filled) {
+		min-height: var(--control-height);
+		padding: 0 var(--space-4);
 	}
 
 	.page-header :global(.banner) {
@@ -101,17 +108,32 @@
 		z-index: 21;
 		margin: calc(-1 * var(--page-top)) calc(-1 * var(--space-4)) var(--space-4);
 		padding: var(--page-top) var(--space-4) var(--space-1);
-		border-bottom: var(--hairline) solid transparent;
 		background: var(--background);
 	}
 
-	:global(.scrolled) .inline {
-		border-bottom-color: var(--separator);
+	.inline::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		right: 0;
+		left: 0;
+		height: var(--space-5);
+		background: inherit;
+		-webkit-mask: linear-gradient(#000, transparent);
+		mask: linear-gradient(#000, transparent);
+		opacity: 0;
+		transition: opacity 200ms ease;
+		pointer-events: none;
 	}
 
+	:global(.scrolled) .inline::after {
+		opacity: 1;
+	}
+
+	/* Equal sides, each at least as wide as its buttons: the title stays centered on the screen while there is room. */
 	.inline .bar {
 		display: grid;
-		grid-template-columns: 44px minmax(0, 1fr) 44px;
+		grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr);
 		min-height: 44px;
 	}
 
@@ -135,14 +157,6 @@
 	.back {
 		grid-column: 1;
 		justify-self: start;
-		width: var(--control-height);
-		height: var(--control-height);
-		padding: 0;
-		border: var(--hairline) solid var(--glass-edge);
-		border-radius: 50%;
-		background: var(--glass);
-		box-shadow: var(--glass-shadow-sm);
-		color: var(--foreground);
 	}
 
 	.back svg {

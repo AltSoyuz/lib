@@ -7,16 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/app.css`: `.glass`, a button on Liquid Glass for the controls of a bar, a sheet's header or a screen's
+  overlay, and `.round`, an icon alone in a 44px circle. A `.filled` among the trailing controls of a title bar is
+  as tall as they are, 44px.
+
 ### Changed
 
-- `web/`: the look of Apple's iOS 26 apps, measured on Shazam. Large titles are heavy (800) and sit 4px higher,
-  12px above the content instead of 16. Section headers of grouped lists (`.section > h2`) are bold, 22px, in the
-  text color and aligned with the list's edge, no longer gray uppercase footnotes inset like the cells: an app's
-  headers show as written, so they are written in sentence case. Cards and lists round at 26px, the tab bar capsule
-  is 62px tall. The back button of an inline title bar is a 44px glass circle; a sheet's header buttons are 44px
-  capsules 12px from its corners, Cancel or Close on glass, Save filled with the primary color, the close button of
-  a read only sheet a glass circle. A large title still starts at `--page-top`, below the blur iOS draws under the
-  status bar of a home screen app, where a native app draws it about 24 points higher.
+- `web/`: the look of Apple's iOS 26 apps, measured on Shazam. Large titles are heavy (800) and sit 4px higher.
+  Section headers of grouped lists (`.section > h2`) are bold, 22px, in the text color and aligned with the list's
+  edge, no longer gray uppercase footnotes inset like the cells: an app's headers show as written, so they are written
+  in sentence case. Cards and lists round at 26px, the tab bar capsule is 62px tall. Content scrolls under a soft edge
+  below the status bar and an inline title bar instead of a hairline. The back button of an inline title bar is
+  `.glass.round`, its sides are as wide as their buttons (a wide Done no longer overflows onto the title, which stays
+  centered while there is room), and the trailing controls of a title bar are 8px apart. A sheet's header buttons are
+  44px capsules 12px from its corners: Cancel or Close `.glass`, Save `.filled`, the close button of a read only sheet
+  `.glass.round`. A large title still starts at `--page-top`, below the blur iOS draws under the status bar of a home
+  screen app, where a native app draws it about 24 points higher.
 
 ## [0.3.7]
 

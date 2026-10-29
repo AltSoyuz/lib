@@ -245,7 +245,7 @@ a {
 }
 
 /* Buttons: plain tint text by default, .filled for the main action, .tinted for a secondary one
-   on a banner or a row, .destructive for what removes or locks. */
+   on a banner or a row, .glass for a control of a bar or over content, .destructive for what removes or locks. */
 button,
 .button {
 	display: inline-flex;
@@ -298,6 +298,25 @@ button:active:not(:disabled),
 	border-radius: var(--radius-pill);
 	background: var(--tint-soft);
 	font-weight: 600;
+}
+
+.glass {
+	padding: 0 var(--space-4);
+	border: var(--hairline) solid var(--glass-edge);
+	border-radius: var(--radius-pill);
+	background: var(--glass);
+	box-shadow: var(--glass-shadow-sm);
+	color: var(--foreground);
+	-webkit-backdrop-filter: var(--glass-blur);
+	backdrop-filter: var(--glass-blur);
+}
+
+/* An icon alone, in a circle as tall as a control. */
+.round {
+	width: var(--control-height);
+	height: var(--control-height);
+	padding: 0;
+	border-radius: 50%;
 }
 
 .destructive {
