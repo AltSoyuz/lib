@@ -143,7 +143,7 @@
 					<button type="submit" class="save" disabled={!canSave || busy}>{busy ? 'Saving…' : saveLabel}</button>
 				{:else}
 					<button type="button" class="close" aria-label="Close" onclick={requestClose}>
-						<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="15" /><path d="M10.5 10.5l9 9m0-9-9 9" /></svg>
+						<svg viewBox="0 0 30 30" aria-hidden="true"><path d="M10.5 10.5l9 9m0-9-9 9" /></svg>
 					</button>
 				{/if}
 			</div>
@@ -235,7 +235,8 @@
 		align-items: center;
 		gap: var(--space-2);
 		min-height: 56px;
-		padding: 6px var(--space-2) 0;
+		/* 12px from the sheet's 34px corners: concentric with the 22px of a 44px capsule. */
+		padding: var(--space-3) var(--space-3) 0;
 	}
 
 	.trail {
@@ -254,14 +255,38 @@
 		text-overflow: ellipsis;
 	}
 
+	header button {
+		min-width: var(--control-height);
+		padding: 0 var(--space-4);
+		border-radius: var(--radius-pill);
+	}
+
+	.lead button,
+	.close {
+		border: var(--hairline) solid var(--glass-edge);
+		background: var(--glass);
+		box-shadow: var(--glass-shadow-sm);
+		color: var(--foreground);
+	}
+
+	.lead button:disabled {
+		color: var(--faint);
+	}
+
 	.save {
+		background: var(--primary);
+		color: var(--primary-foreground);
 		font-weight: 600;
 	}
 
+	.save:disabled {
+		background: var(--fill);
+		color: var(--faint);
+	}
+
 	.close {
-		width: 44px;
+		width: var(--control-height);
 		padding: 0;
-		border-radius: 50%;
 	}
 
 	.close svg {
@@ -269,14 +294,10 @@
 		height: 30px;
 	}
 
-	.close circle {
-		fill: var(--fill);
-	}
-
 	.close path {
 		fill: none;
-		stroke: var(--muted-foreground);
-		stroke-width: 2.4;
+		stroke: currentColor;
+		stroke-width: 2.2;
 		stroke-linecap: round;
 	}
 

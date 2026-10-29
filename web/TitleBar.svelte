@@ -59,7 +59,7 @@
 
 <style>
 	.page-header {
-		margin: 0 0 var(--space-4);
+		margin: 0 0 var(--space-3);
 	}
 
 	.bar {
@@ -67,7 +67,7 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-3);
-		min-height: 52px;
+		min-height: var(--control-height);
 	}
 
 	h1 {
@@ -136,8 +136,13 @@
 		grid-column: 1;
 		justify-self: start;
 		width: var(--control-height);
-		margin-left: calc(-1 * var(--space-2));
+		height: var(--control-height);
 		padding: 0;
+		border: var(--hairline) solid var(--glass-edge);
+		border-radius: 50%;
+		background: var(--glass);
+		box-shadow: var(--glass-shadow-sm);
+		color: var(--foreground);
 	}
 
 	.back svg {

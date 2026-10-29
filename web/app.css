@@ -47,13 +47,15 @@
 	--glass-edge: rgb(255 255 255 / 14%);
 	--glass-blur: blur(24px) saturate(180%);
 	--glass-shadow: 0 8px 24px rgb(0 0 0 / 40%), inset 0 1px 0 rgb(255 255 255 / 8%);
+	/* Small controls on glass inside a bar or a sheet header (back, Cancel). */
+	--glass-shadow-sm: 0 2px 8px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 8%);
 	--ring: var(--brand-300);
 
 	/* iOS 26 corners: small marks, controls, cards and lists, sheets; capsules (999px) for buttons and switches.
 	   A shape inside another keeps the curve concentric: inner radius = outer radius - the gap between them. */
 	--radius-sm: 8px;
 	--radius: 14px;
-	--radius-lg: 24px;
+	--radius-lg: 26px;
 	--radius-xl: 34px;
 	--radius-pill: 999px;
 	--hairline: 1px;
@@ -67,6 +69,7 @@
 
 	/* iOS text styles; 1rem is the body size, 17px unless the iPhone text size setting says otherwise. */
 	--text-large-title: 2rem;
+	--text-title2: calc(22rem / 17);
 	--text-title3: calc(20rem / 17);
 	--text-body: 1rem;
 	--text-callout: calc(16rem / 17);
@@ -129,6 +132,7 @@
 	--glass: rgb(250 250 252 / 86%);
 	--glass-edge: rgb(0 0 0 / 8%);
 	--glass-shadow: 0 8px 24px rgb(0 0 0 / 14%), inset 0 1px 0 rgb(255 255 255 / 70%);
+	--glass-shadow-sm: 0 2px 8px rgb(0 0 0 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%);
 	--ring: var(--brand-500);
 }
 
@@ -139,7 +143,7 @@
 }
 
 .tabbed {
-	--tabbar-capsule: 58px;
+	--tabbar-capsule: 62px;
 	--tabbar-inset: max(var(--space-2), var(--safe-bottom) - var(--space-3));
 	/* The whole band the floating capsule takes, gaps included: what fixed bottom bars sit on. */
 	--tabbar-height: calc(var(--tabbar-capsule) + var(--tabbar-inset) + var(--space-2));
@@ -211,19 +215,17 @@ h3 {
 
 h1 {
 	font-size: var(--text-large-title);
-	font-weight: 700;
+	font-weight: 800;
 	line-height: var(--leading-tight);
 	letter-spacing: 0.01em;
 }
 
 /* Section header of a grouped list. */
 .section > h2 {
-	margin: 0 var(--space-4) 7px;
-	color: var(--muted-foreground);
-	font-size: var(--text-footnote);
-	font-weight: 400;
-	line-height: var(--leading);
-	text-transform: uppercase;
+	margin: 0 0 var(--space-3);
+	font-size: var(--text-title2);
+	font-weight: 700;
+	line-height: var(--leading-tight);
 }
 
 h3 {

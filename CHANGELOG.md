@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `web/`: the look of Apple's iOS 26 apps, measured on Shazam. Large titles are heavy (800) and sit 4px higher,
+  12px above the content instead of 16. Section headers of grouped lists (`.section > h2`) are bold, 22px, in the
+  text color and aligned with the list's edge, no longer gray uppercase footnotes inset like the cells: an app's
+  headers show as written, so they are written in sentence case. Cards and lists round at 26px, the tab bar capsule
+  is 62px tall. The back button of an inline title bar is a 44px glass circle; a sheet's header buttons are 44px
+  capsules 12px from its corners, Cancel or Close on glass, Save filled with the primary color, the close button of
+  a read only sheet a glass circle. A large title still starts at `--page-top`, below the blur iOS draws under the
+  status bar of a home screen app, where a native app draws it about 24 points higher.
+
 ## [0.3.7]
 
 ### Fixed
