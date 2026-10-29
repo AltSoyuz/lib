@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2]
+
 ### Changed
 
 - `web/app.css`: chips are the filter chips of Apple's iOS 26 apps, measured on Shazam's library: 44px capsules 10px
