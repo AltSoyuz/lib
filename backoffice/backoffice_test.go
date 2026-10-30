@@ -38,6 +38,8 @@ type app struct {
 
 const superAdmin = "boss@example.com"
 
+var testPolicy = sessions.SessionPolicy{TTL: 7 * 24 * time.Hour, RefreshThreshold: 24 * time.Hour, AbsoluteTTL: 30 * 24 * time.Hour}
+
 func newApp(t *testing.T, approval bool) *app {
 	t.Helper()
 	db, err := sql.Open("sqlite3", "file::memory:?_foreign_keys=on")
@@ -59,7 +61,8 @@ func newApp(t *testing.T, approval bool) *app {
 	bo, err := New(Config{
 		DB: db, Roles: []string{RoleAdmin, "user"}, MemberRole: "user", Approval: approval,
 		SuperAdmins: map[string]struct{}{superAdmin: {}},
-		Sessions:    sessions.SessionPolicy{TTL: 7 * 24 * time.Hour, RefreshThreshold: 24 * time.Hour, AbsoluteTTL: 30 * 24 * time.Hour},
+		Sessions:    testPolicy,
+		Features:    []Feature{{Name: "events", Label: "Events"}, {Name: "skillbooks", Label: "Skillbooks"}},
 	})
 	if err != nil {
 		t.Fatalf("new: %v", err)

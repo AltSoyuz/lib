@@ -47,7 +47,7 @@ node --test web/*.test.ts
 |---|---|
 | `audit` | Audit log: write in the change's transaction, list for a back office. |
 | `auth` | Auth subpackages and SQL artefacts. |
-| `backoffice` | Accounts, access, session check, admin routes, View as, announcement, account stats. |
+| `backoffice` | Accounts, access, session check, admin routes, View as, announcement, features, account stats. |
 | `buildinfo` | Version flag and build metric. |
 | `claude` | Anthropic Messages API client. |
 | `db` | `database/sql` helpers, migrations, tracing. |

@@ -30,6 +30,8 @@ const (
 	ImpersonationStopped = "impersonation_stopped"
 	AnnouncementSet      = "announcement_set"
 	AnnouncementCleared  = "announcement_cleared"
+	// FeatureSet stays out of AccountActions: a back office lists it only when the app has features.
+	FeatureSet = "feature_set"
 )
 
 // AccountActions lists the account codes in the order a back office filter shows them.

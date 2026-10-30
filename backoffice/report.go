@@ -28,7 +28,11 @@ type LoggedEvent struct {
 }
 
 func (b *Backoffice) actions() []string {
-	return append(slices.Clone(audit.AccountActions), b.cfg.Actions...)
+	actions := slices.Clone(audit.AccountActions)
+	if len(b.cfg.Features) > 0 {
+		actions = append(actions, audit.FeatureSet)
+	}
+	return append(actions, b.cfg.Actions...)
 }
 
 // handleAudit pages through the audit log: ?action= and ?actor= filter it, ?before= is the next_before of the page before.

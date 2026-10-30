@@ -1,11 +1,12 @@
 // Package backoffice is the back office the apps share: who may use an app (roles, access states), the session
 // check that enforces it on every request, the admin routes over the accounts, View as, the announcement shown to
-// everyone, the audit log and the account stats. schema.sql lists the columns and the table it needs beside lib's
-// auth tables and audit_events.
+// everyone, the features an admin keeps to the admins, the audit log and the account stats. schema.sql lists the
+// columns and the tables it needs beside lib's auth tables and audit_events.
 //
 // An app keeps its sign-in flows: they call Admit and AuditSignIn in the transaction that creates the session, and
 // every handler that needs a signed-in user calls Check (or RequireAdmin). Mount serves the admin routes under
-// /api/v1/admin/; the UI kit (lib's web/admin) draws them.
+// /api/v1/admin/ and the features under /api/v1/features; the UI kit (lib's web/admin, web/features.svelte.ts)
+// draws them.
 package backoffice
 
 import (
@@ -67,6 +68,8 @@ type Config struct {
 	Actions []string
 	// Sessions is the session lifetime policy the check refreshes sessions with.
 	Sessions sessions.SessionPolicy
+	// Features are the parts of the app an admin can keep to the admins, in the order the back office lists them.
+	Features []Feature
 }
 
 // Backoffice serves the back office of one app.
@@ -85,6 +88,9 @@ func New(cfg Config) (*Backoffice, error) {
 		return nil, fmt.Errorf("backoffice: Config.MemberRole %q is not one of the non-admin roles %v", cfg.MemberRole, cfg.Roles)
 	case cfg.Sessions.TTL <= 0:
 		return nil, errors.New("backoffice: Config.Sessions has no TTL")
+	}
+	if err := checkFeatures(cfg.Features); err != nil {
+		return nil, err
 	}
 	if cfg.SuperAdmins == nil {
 		cfg.SuperAdmins = map[string]struct{}{}

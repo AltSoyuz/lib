@@ -1,5 +1,6 @@
 // The back office API of lib's backoffice package (/api/v1/admin/*), its types and the account labels.
 import { request } from '../api';
+import type { Audience, Feature } from '../features.svelte';
 
 export type AccessState = 'active' | 'restrained' | 'pending';
 
@@ -81,6 +82,10 @@ export async function setAnnouncement(text: string, tone: Announcement['tone']):
 
 export const clearAnnouncement = () => call('DELETE', '/announcement');
 
+export async function setFeature(name: string, audience: Audience): Promise<Feature> {
+	return (await call('PUT', `/features/${name}`, { audience })).json();
+}
+
 export function auditQuery(f: AuditFilter): string {
 	const q = new URLSearchParams();
 	if (f.before) q.set('before', String(f.before));
@@ -140,7 +145,8 @@ export const accountLabels: Record<string, string> = {
 	impersonation_started: 'View as started',
 	impersonation_stopped: 'View as stopped',
 	announcement_set: 'Announcement posted',
-	announcement_cleared: 'Announcement cleared'
+	announcement_cleared: 'Announcement cleared',
+	feature_set: 'Feature audience'
 };
 
 const text = (v: unknown) => (typeof v === 'string' ? v : v === undefined || v === null ? '' : String(v));
@@ -173,6 +179,8 @@ export function describeAccount(e: AuditEvent): string | null {
 			return `${who} posted the announcement (${text(d.tone)}, ${text(d.length)} characters)`;
 		case 'announcement_cleared':
 			return `${who} cleared the announcement`;
+		case 'feature_set':
+			return `${who} showed ${text(d.label) || target} to ${d.audience === 'admins' ? 'the admins only' : 'everyone'}`;
 	}
 	return null;
 }

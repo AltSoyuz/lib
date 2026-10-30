@@ -18,3 +18,11 @@ CREATE TABLE IF NOT EXISTS announcement (
   updated_at TEXT NOT NULL, -- fixed width UTC: a phone keeps the one it closed, so each change gives a new value
   updated_by TEXT REFERENCES users(id) ON DELETE SET NULL
 );
+
+-- The audience an admin chose for a feature of Config.Features; a feature without a row is for everyone.
+CREATE TABLE IF NOT EXISTS features (
+  name       TEXT PRIMARY KEY,
+  audience   TEXT NOT NULL CHECK (audience IN ('everyone', 'admins')),
+  updated_at TEXT NOT NULL,
+  updated_by TEXT REFERENCES users(id) ON DELETE SET NULL
+);

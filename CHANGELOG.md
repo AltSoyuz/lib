@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `backoffice`: features an admin keeps to the admins, such as a beta. An app lists them in `Config.Features` (name
+  and label); each is for everyone until an admin picks Admins in the back office. `Mount` serves
+  `GET /api/v1/features` without a session, so an app used signed out hides them too, and
+  `PUT /api/v1/admin/features/{name}`, audited as `audit.FeatureSet`. The audience is stored in a new `features`
+  table (`backoffice/schema.sql`); an app that declares no feature never reads it and needs no migration.
+- `web/features.svelte.ts`: `initFeatures(key)` in the root layout shows the features kept on the phone, offline
+  included, then the server's; `featureOn(name, role)` says whether to show one, an admins feature only once /me gives
+  the admin role. `web/admin/Features.svelte` is the back office's Features section, one Everyone or Admins picker
+  per feature.
+
 ## [0.4.2]
 
 ### Changed

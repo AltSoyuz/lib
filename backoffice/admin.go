@@ -15,8 +15,9 @@ import (
 	"github.com/AltSoyuz/lib/logger"
 )
 
-// Mount serves the admin routes; every one needs an admin session.
+// Mount serves the admin routes, each needing an admin session, and GET /api/v1/features, which needs none.
 func (b *Backoffice) Mount(mux *http.ServeMux) {
+	mux.HandleFunc("GET /api/v1/features", b.handleFeatures)
 	mux.HandleFunc("GET /api/v1/admin/users", b.handleListUsers(false))
 	mux.HandleFunc("GET /api/v1/admin/connected-users", b.handleListUsers(true))
 	mux.HandleFunc("POST /api/v1/admin/users/{id}/role", b.handleSetRole)
@@ -27,6 +28,7 @@ func (b *Backoffice) Mount(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/v1/admin/impersonation/stop", b.handleStopImpersonation)
 	mux.HandleFunc("PUT /api/v1/admin/announcement", b.handleSetAnnouncement)
 	mux.HandleFunc("DELETE /api/v1/admin/announcement", b.handleClearAnnouncement)
+	mux.HandleFunc("PUT /api/v1/admin/features/{name}", b.handleSetFeature)
 	mux.HandleFunc("GET /api/v1/admin/audit", b.handleAudit)
 	mux.HandleFunc("GET /api/v1/admin/stats", b.handleStats)
 }
