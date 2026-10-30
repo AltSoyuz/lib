@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/Tour.svelte` and `web/tour.ts`: the first-run tour of Compass, shared. A welcome (logo, rows of what the app does, a
+  note), then one swiped page per step with the app's scene, a title, one sentence and Try it; dots, Skip, Continue and
+  Get started. The app gives the content (`TourWelcome`, `TourStep`), a `scene` and an `icon` snippet, the page to
+  start at, and keeps the page and where the tour leads (`onpage`, `ontry`, `onfinish`). Scenes draw on `.card`,
+  `.label` and `.pill`, styled by the stage. `shownInTour(items, admin)` keeps what every account has: a step or a row
+  of a feature kept to the admins stays out, for the admins too, and an `admin` step shows to the admins only.
+
 ## [0.5.0]
 
 ### Added

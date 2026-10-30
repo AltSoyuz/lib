@@ -26,6 +26,7 @@ kit-check:  # in make check: the copy is never edited by hand
 | `api.ts` | `request()` for JSON calls to the app's API, `HttpError`, `errorText()`. |
 | `service-worker.ts` | Offline shell, precache, push notifications: `serve({ name, icon })` from `src/service-worker.ts`. |
 | `viewport.ts` | Pure helper of the viewport fix, tested with `node --test`. |
+| `Tour.svelte`, `tour.ts` | The first-run tour as an iOS onboarding, over the whole screen: a welcome (logo, a row per thing the app does, a note), then one swiped page per step with the app's scene of its screen, a title, one sentence and Try it. The app writes `TourWelcome` and `TourStep`s, draws each scene on `.card`, `.label` and `.pill`, opens the tour and keeps its page (`onpage`, `ontry`, `onfinish`); `shownInTour(items, admin)` keeps what every account has. |
 | `features.svelte.ts` | The features of lib's `backoffice`, kept on the phone: `initFeatures(key)` once in the root layout, then `featureOn(name, role)` where the app shows a feature. |
 | `admin/` | The back office of lib's `backoffice` package: `admin.ts` (API, types, account labels), `Users`, `Announcement`, `AnnouncementBanner`, `Features`, `AuditLog`, `Stats`, `PendingAccess`, `ViewingAs`. An app composes its `/admin` page from them and adds its own tabs. |
 
