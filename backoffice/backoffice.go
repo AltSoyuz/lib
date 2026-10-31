@@ -3,10 +3,11 @@
 // everyone, the features an admin keeps to the admins, the audit log and the account stats. schema.sql lists the
 // columns and the tables it needs beside lib's auth tables and audit_events.
 //
-// An app keeps its sign-in flows: they call Admit and AuditSignIn in the transaction that creates the session, and
-// every handler that needs a signed-in user calls Check (or RequireAdmin). Mount serves the admin routes under
-// /api/v1/admin/ and the features under /api/v1/features; the UI kit (lib's web/admin, web/features.svelte.ts)
-// draws them.
+// Every app signs in with a 6-digit code sent by email: RequestCode and VerifyCode, drawn by the kit's SignIn.svelte.
+// Another way to prove an address (a password, a provider) calls SignIn. Every handler that needs a signed-in user
+// calls Check (or RequireAdmin); HandleMe and HandleSignOut serve /me and sign out. Mount serves the admin routes
+// under /api/v1/admin/ and the features under /api/v1/features; the UI kit (lib's web/admin,
+// web/features.svelte.ts) draws them.
 package backoffice
 
 import (
@@ -16,6 +17,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"time"
 
 	"github.com/AltSoyuz/lib/auth/passwords"
 	"github.com/AltSoyuz/lib/auth/sessions"
@@ -70,11 +72,16 @@ type Config struct {
 	Sessions sessions.SessionPolicy
 	// Features are the parts of the app an admin can keep to the admins, in the order the back office lists them.
 	Features []Feature
+	// AppName names the app in the email that carries a sign-in code.
+	AppName string
+	// CodeEmail writes that email (subject, text, html) in the app's language; nil writes it in English.
+	CodeEmail func(code string, ttl time.Duration) (subject, text, html string)
 }
 
 // Backoffice serves the back office of one app.
 type Backoffice struct {
-	cfg Config
+	cfg   Config
+	codes *codeState
 }
 
 // New checks the Config.
@@ -95,7 +102,13 @@ func New(cfg Config) (*Backoffice, error) {
 	if cfg.SuperAdmins == nil {
 		cfg.SuperAdmins = map[string]struct{}{}
 	}
-	return &Backoffice{cfg: cfg}, nil
+	codes, err := newCodeState()
+	if err != nil {
+		return nil, err
+	}
+	b := &Backoffice{cfg: cfg, codes: codes}
+	codes.send = b.mailCode
+	return b, nil
 }
 
 // User is an account as the back office sees it.

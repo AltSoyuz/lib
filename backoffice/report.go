@@ -180,9 +180,11 @@ func (b *Backoffice) handleStats(w http.ResponseWriter, r *http.Request) {
 	httpserver.WriteJSON(w, r, http.StatusOK, stats)
 }
 
-// Me is what /me adds about access: the API access state, who views the app as this user, whether the user may
-// View as, and the announcement to show (only to an active account).
+// Me is /me: the account, its API access state, who views the app as this user, whether the user may View as, and
+// the announcement to show (only to an active account). An app with more to say embeds it in its own answer.
 type Me struct {
+	UserID         string        `json:"user_id"`
+	Email          string        `json:"email"`
 	Role           string        `json:"role"`
 	AccessState    string        `json:"access_state"`
 	ImpersonatedBy string        `json:"impersonated_by,omitempty"`
@@ -190,9 +192,11 @@ type Me struct {
 	Announcement   *Announcement `json:"announcement,omitempty"`
 }
 
-// MeOf returns the access part of /me for a session from CheckAllowPending.
+// MeOf returns /me for a session from CheckAllowPending.
 func (b *Backoffice) MeOf(ctx context.Context, sess Session) (Me, error) {
 	out := Me{
+		UserID:         sess.UserID,
+		Email:          sess.Email,
 		Role:           sess.Role,
 		AccessState:    apiAccess(sess.AccessState, sess.PendingSince),
 		CanImpersonate: sess.ImpersonatorID == "" && b.IsSuperAdmin(sess.Role, sess.Email),

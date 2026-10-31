@@ -9,7 +9,6 @@ SvelteKit apps copy from the module (see `web/README.md`).
 
 - Keep it libraries-only: no `cmd/`, no app wiring, no product-specific code.
 - Supplier regime: something enters lib at its second real use in an app, and a break ships with its migration (below).
-- `homeapp` is pinned to an older version and is not migrated with the others until someone works on it.
 - Keep packages small, explicit, and dependency-light.
 - Prefer godoc over package README files. The root README is the landing page.
 
@@ -47,7 +46,7 @@ node --test web/*.test.ts
 |---|---|
 | `audit` | Audit log: write in the change's transaction, list for a back office. |
 | `auth` | Auth subpackages and SQL artefacts. |
-| `backoffice` | Accounts, access, session check, admin routes, View as, announcement, features, account stats. |
+| `backoffice` | Sign-in by email code, accounts, access, session check, /me, admin routes, View as, announcement, features, account stats. |
 | `buildinfo` | Version flag and build metric. |
 | `claude` | Anthropic Messages API client. |
 | `db` | `database/sql` helpers, migrations, tracing. |
@@ -56,7 +55,6 @@ node --test web/*.test.ts
 | `logger` | Small structured logger. |
 | `mailer` | Blackhole, SMTP, AWS SES v2, Resend email. |
 | `oauthgoogle` | Google Sign-In OAuth provider (code flow + PKCE). |
-| `telegram` | Telegram Bot API client. |
 | `web/` | UI kit (CSS, Svelte, TS) copied by the apps, not a Go package. |
 
 ## Release notes

@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `backoffice`: the sign-in by a 6-digit code sent by email, which Explore and Compass each carried:
+  `RequestCode` (`POST /api/v1/sign-in/code`) and `VerifyCode` (`POST /api/v1/sign-in/verify`), with the same
+  limits (5 codes per address in 15 minutes, 5 wrong tries close a code, 5 requests and 20 verifications per
+  minute and address) and the code logged as `login code (dev)` when the mailer is a blackhole. `SignIn` opens the
+  session of an address the app proved another way (a password, a provider). `HandleMe` (`GET /api/v1/me`) and
+  `HandleSignOut` (`POST /api/v1/sign-out`). `Config.AppName` names the app in the email, `Config.CodeEmail`
+  writes it in another language. `Me` carries `user_id` and `email`.
+- `auth/schema/migrations/004_login_codes.sql`: the `attempts` column the code sign-in counts wrong tries in
+  (Explore's 013 and Compass's 008 already have it).
+- `web/SignIn.svelte`: the sign-in page of the code, from Explore's. `web/admin/Banners.svelte`: View as and the
+  announcement for `TitleBar`'s `banners`, from the PageHeader of both apps.
+- `web/text.ts`: the words of the kit outside `admin/`; `useText` puts an app in its own language.
+
+### Removed
+
+- `telegram` and `auth/magiclinks`: no app uses them any more.
+
 ## [0.7.0]
 
 ### Added

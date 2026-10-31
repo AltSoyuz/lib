@@ -1,3 +1,5 @@
+import { text } from './text';
+
 // The error of an API call: message is the server's error code ({"error": "..."}), or <fallback>_<status> without one.
 export class HttpError extends Error {
 	status: number;
@@ -30,6 +32,6 @@ export async function request(method: string, url: string, body?: unknown, signa
 
 // fetch rejects with a TypeError when the network fails, before any HTTP status.
 export function errorText(e: unknown): string {
-	if (e instanceof TypeError) return 'Cannot reach the server. Check your connection and try again.';
+	if (e instanceof TypeError) return text.unreachable;
 	return (e as Error).message;
 }

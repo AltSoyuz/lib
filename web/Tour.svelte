@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
 	import type { TourStep, TourWelcome } from './tour';
+	import { text } from './text';
 
 	// A first-run tour as an iOS onboarding, over the whole screen: the welcome, then one swiped page per step with the app's scene of its
 	// screen. Page 0 is the welcome, page i + 1 the step i; the app opens it, keeps the page it is at (onpage) and leaves it (ontry, onfinish).
@@ -56,7 +57,7 @@
 
 <div class="tour">
 	<header>
-		{#if !last}<button type="button" class="glass" onclick={onfinish}>Skip</button>{/if}
+		{#if !last}<button type="button" class="glass" onclick={onfinish}>{text.skip}</button>{/if}
 	</header>
 
 	<div class="pages" bind:this={pages} onscroll={scrolled}>
@@ -90,10 +91,10 @@
 	<footer>
 		<div class="dots">
 			{#each { length: count }, i (i)}
-				<button type="button" aria-label="Page {i + 1} of {count}" aria-current={i === at} onclick={() => go(i)}><span></span></button>
+				<button type="button" aria-label={text.page(i + 1, count)} aria-current={i === at} onclick={() => go(i)}><span></span></button>
 			{/each}
 		</div>
-		<button type="button" class="filled wide" onclick={() => (last ? onfinish() : go(at + 1))}>{last ? 'Get started' : 'Continue'}</button>
+		<button type="button" class="filled wide" onclick={() => (last ? onfinish() : go(at + 1))}>{last ? text.getStarted : text.continue}</button>
 	</footer>
 </div>
 

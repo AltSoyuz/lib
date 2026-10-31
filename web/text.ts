@@ -1,0 +1,49 @@
+// The words the kit shows outside the back office, in English; an app in another language replaces them with useText
+// in its root layout's script, before anything renders. The back office screens (admin/) stay in English.
+export const text = {
+	cancel: 'Cancel',
+	close: 'Close',
+	save: 'Save',
+	saving: 'Saving…',
+	discardChanges: 'Discard your changes?',
+	back: (label: string) => `Back to ${label}`,
+	offline: 'You are offline. Nothing new will load until the connection is back.',
+	newVersion: 'A new version is available.',
+	reconnected: 'The connection is back.',
+	reload: 'Reload',
+	unreachable: 'Cannot reach the server. Check your connection and try again.',
+	skip: 'Skip',
+	continue: 'Continue',
+	getStarted: 'Get started',
+	page: (n: number, count: number) => `Page ${n} of ${count}`,
+	closeAnnouncement: 'Close announcement',
+	viewingAs: 'Viewing as',
+	readOnly: '(read only).',
+	stop: 'Stop',
+	pendingTitle: 'Almost there',
+	pendingText: 'Your account is waiting for approval. An organizer will let you in soon.',
+	signedInAs: 'Signed in as',
+	checkAgain: 'Check again',
+	signOut: 'Sign out',
+	email: 'Email',
+	sendCode: 'Send code',
+	codeSentTo: 'Enter the 6-digit code sent to',
+	code: 'Code',
+	signIn: 'Sign in',
+	signingIn: 'Signing in…',
+	resendCode: 'Resend code',
+	resendIn: (s: number) => `Resend code in ${s} s`,
+	useAnotherEmail: 'Use another email',
+	newCodeSent: 'A new code is on its way.',
+	enterSixDigits: 'Enter the 6 digits of the code.',
+	tooManyCodes: 'Too many codes were sent to this address. Use the latest one, or wait 15 minutes to ask again.',
+	rateLimited: 'Too many tries from this connection. Wait a minute and try again.',
+	invalidEmail: 'Enter a valid email address.',
+	wrongCode: 'This code is wrong or has expired. Check the latest email.',
+	tooManyAttempts: 'Too many wrong codes. Request a new code.',
+	restrained: 'This account cannot sign in. Ask an organizer.'
+};
+
+export function useText(words: Partial<typeof text>) {
+	Object.assign(text, words);
+}

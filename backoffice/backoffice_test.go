@@ -51,6 +51,7 @@ func newApp(t *testing.T, approval bool) *app {
 	for _, s := range []string{
 		readFile(t, "../auth/schema/migrations/001_users.sql"),
 		readFile(t, "../auth/schema/migrations/002_sessions.sql"),
+		readFile(t, "../auth/schema/migrations/004_login_codes.sql"),
 		readFile(t, "../audit/schema.sql"),
 		schema,
 	} {

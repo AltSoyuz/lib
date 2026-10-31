@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { text } from './text';
 
 	// With onsave: Cancel and Save in the header, the content is the form; Cancel reads Close while nothing would be discarded, as some changes apply at once. Without: a read only sheet with a close button. Both close with a pull down.
 	let {
@@ -8,7 +9,7 @@
 		dirty = false,
 		busy = false,
 		canSave = true,
-		saveLabel = 'Save',
+		saveLabel = text.save,
 		onsave,
 		onclosed,
 		children
@@ -41,7 +42,7 @@
 
 	function requestClose() {
 		if (busy) return;
-		if (dirty && !confirm('Discard your changes?')) return;
+		if (dirty && !confirm(text.discardChanges)) return;
 		open = false;
 	}
 
@@ -134,15 +135,15 @@
 		<header>
 			<div class="lead">
 				{#if onsave}
-					<button type="button" class="glass" onclick={requestClose} disabled={busy}>{dirty ? 'Cancel' : 'Close'}</button>
+					<button type="button" class="glass" onclick={requestClose} disabled={busy}>{dirty ? text.cancel : text.close}</button>
 				{/if}
 			</div>
 			<h2 id="{id}-title">{title}</h2>
 			<div class="trail">
 				{#if onsave}
-					<button type="submit" class="save filled" disabled={!canSave || busy}>{busy ? 'Saving…' : saveLabel}</button>
+					<button type="submit" class="save filled" disabled={!canSave || busy}>{busy ? text.saving : saveLabel}</button>
 				{:else}
-					<button type="button" class="close glass round" aria-label="Close" onclick={requestClose}>
+					<button type="button" class="close glass round" aria-label={text.close} onclick={requestClose}>
 						<svg viewBox="0 0 30 30" aria-hidden="true"><path d="M10.5 10.5l9 9m0-9-9 9" /></svg>
 					</button>
 				{/if}

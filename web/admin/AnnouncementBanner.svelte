@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Announcement } from './admin';
+	import { text } from '../text';
 
 	// Without onclose: the back office preview, which has no close button.
 	let { announcement, onclose }: { announcement: Pick<Announcement, 'text' | 'tone'>; onclose?: () => void } = $props();
@@ -8,7 +9,7 @@
 <div class="banner announcement" class:warning={announcement.tone === 'warning'} role="status">
 	<p>{announcement.text}</p>
 	{#if onclose}
-		<button type="button" class="close" aria-label="Close announcement" onclick={onclose}>
+		<button type="button" class="close" aria-label={text.closeAnnouncement} onclick={onclose}>
 			<svg viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="15" /><path d="M10.5 10.5l9 9m0-9-9 9" /></svg>
 		</button>
 	{/if}

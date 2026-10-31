@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { errorText } from '../api';
+	import { text } from '../text';
 
 	// The page of an account waiting for an admin: it can only check again or sign out.
 	let { email, logo, onsignout }: { email: string; logo: string; onsignout: () => Promise<void> } = $props();
@@ -21,11 +22,11 @@
 
 <section class="pending-access" aria-labelledby="pending-access-title">
 	<img src={logo} alt="" width="72" height="72" />
-	<h1 id="pending-access-title">Almost there</h1>
-	<p>Your account is waiting for approval. An organizer will let you in soon.</p>
-	<p class="muted">Signed in as <strong>{email}</strong></p>
-	<button type="button" class="filled wide" onclick={() => location.reload()} disabled={signingOut}>Check again</button>
-	<button type="button" class="wide" onclick={signOut} disabled={signingOut}>Sign out</button>
+	<h1 id="pending-access-title">{text.pendingTitle}</h1>
+	<p>{text.pendingText}</p>
+	<p class="muted">{text.signedInAs} <strong>{email}</strong></p>
+	<button type="button" class="filled wide" onclick={() => location.reload()} disabled={signingOut}>{text.checkAgain}</button>
+	<button type="button" class="wide" onclick={signOut} disabled={signingOut}>{text.signOut}</button>
 	{#if error}
 		<p class="error" role="alert">{error}</p>
 	{/if}

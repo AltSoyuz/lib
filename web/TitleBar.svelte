@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { updated } from '$app/state';
 	import { pwa } from './pwa.svelte';
+	import { text } from './text';
 
 	// inline: a compact bar that stays at the top; otherwise a large title that scrolls with the page.
 	// back: a chevron left of an inline title, named "Back to <label>". trailing: what sits right of the title (an account button).
@@ -28,7 +29,7 @@
 <header class="page-header" class:inline>
 	<div class="bar">
 		{#if back}
-			<button type="button" class="back glass round" aria-label="Back to {back.label}" onclick={back.onclick}>
+			<button type="button" class="back glass round" aria-label={text.back(back.label)} onclick={back.onclick}>
 				<svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg>
 			</button>
 		{/if}
@@ -42,16 +43,16 @@
 	{/if}
 	{@render banners?.()}
 	{#if !pwa.online}
-		<p class="banner" role="status">You are offline. Nothing new will load until the connection is back.</p>
+		<p class="banner" role="status">{text.offline}</p>
 	{:else if updated.current}
 		<div class="banner" role="status">
-			<p>A new version is available.</p>
-			<button type="button" class="tinted" onclick={() => location.reload()}>Reload</button>
+			<p>{text.newVersion}</p>
+			<button type="button" class="tinted" onclick={() => location.reload()}>{text.reload}</button>
 		</div>
 	{:else if pwa.reconnected}
 		<div class="banner" role="status">
-			<p>The connection is back.</p>
-			<button type="button" class="tinted" onclick={() => location.reload()}>Reload</button>
+			<p>{text.reconnected}</p>
+			<button type="button" class="tinted" onclick={() => location.reload()}>{text.reload}</button>
 		</div>
 	{/if}
 	{#if children}

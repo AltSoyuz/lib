@@ -64,7 +64,6 @@ A change to lib reaches the apps in five steps:
 | [`logger`](./logger) | Small structured logger with flag-based level/output/timezone settings and stdlib bridge. |
 | [`mailer`](./mailer) | Email delivery through blackhole, SMTP, AWS SES v2, or Resend, plus verification URL helper. |
 | [`oauthgoogle`](./oauthgoogle) | Google Sign-In through the OAuth 2.0 authorization-code flow with PKCE, standard library only. |
-| [`telegram`](./telegram) | Telegram Bot API client for allowed-user checks, sending messages, polling updates, and command parsing. |
 | [`web`](./web) | UI kit for the SvelteKit apps, copied from the module into each app (not a Go package). |
 
 ## Install

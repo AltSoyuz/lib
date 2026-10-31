@@ -207,3 +207,32 @@ func (b *Backoffice) EndSession(w http.ResponseWriter, r *http.Request) (found b
 	sessions.ClearCookie(w, r)
 	return true, nil
 }
+
+// HandleMe is the handler of GET /api/v1/me: the Me of the session, a pending account's included; 401 without one.
+func (b *Backoffice) HandleMe(w http.ResponseWriter, r *http.Request) {
+	sess, ok := b.CheckAllowPending(w, r)
+	if !ok {
+		return
+	}
+	me, err := b.MeOf(r.Context(), sess)
+	if err != nil {
+		httpserver.WriteError(w, r, http.StatusInternalServerError, fmt.Errorf("internal: %w", err))
+		return
+	}
+	w.Header().Set("Cache-Control", "no-store")
+	httpserver.WriteJSON(w, r, http.StatusOK, me)
+}
+
+// HandleSignOut is the handler of POST /api/v1/sign-out: EndSession, then 204; 401 when there was no session.
+func (b *Backoffice) HandleSignOut(w http.ResponseWriter, r *http.Request) {
+	found, err := b.EndSession(w, r)
+	if err != nil {
+		httpserver.WriteError(w, r, http.StatusInternalServerError, fmt.Errorf("internal: cannot sign out: %w", err))
+		return
+	}
+	if !found {
+		httpserver.WriteError(w, r, http.StatusUnauthorized, errUnauthorized)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}

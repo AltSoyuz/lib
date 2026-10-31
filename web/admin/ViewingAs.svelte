@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { errorText } from '../api';
+	import { text } from '../text';
 	import { stopImpersonation } from './admin';
 
 	// The banner of a View as session; onstopped gets whether the admin's own session is back.
@@ -25,8 +26,8 @@
 </script>
 
 <div class="banner tint" role="status">
-	<p>Viewing as <strong>{email}</strong> (read only).</p>
-	<button type="button" class="tinted" onclick={stop} disabled={stopping}>Stop</button>
+	<p>{text.viewingAs} <strong>{email}</strong> {text.readOnly}</p>
+	<button type="button" class="tinted" onclick={stop} disabled={stopping}>{text.stop}</button>
 	{#if error}
 		<p class="error">{error}</p>
 	{/if}
