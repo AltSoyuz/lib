@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { tick, type Snippet } from 'svelte';
+	import TitleBar from './TitleBar.svelte';
 	import { errorText, request } from './api';
 	import { text } from './text';
 
 	// The sign-in by a code sent by email, against lib's backoffice.RequestCode (POST /api/v1/sign-in/code) and VerifyCode
-	// (POST /api/v1/sign-in/verify). children: what goes under the email step (another way in, an install link).
+	// (POST /api/v1/sign-in/verify), under the kit's title bar and its offline and new version banners. children: what goes
+	// under the email step (another way in, an install link).
 	let {
 		title,
 		logo,
@@ -167,7 +169,7 @@
 
 <div class="sign-in">
 	<img class="brand" src={logo} alt="" width="64" height="64" />
-	<h1>{title}</h1>
+	<TitleBar {title} />
 
 	{#if step === 'email'}
 		<form
@@ -267,10 +269,6 @@
 		display: block;
 		margin: var(--space-5) 0 var(--space-4);
 		border-radius: var(--radius-lg);
-	}
-
-	h1 {
-		margin-bottom: var(--space-4);
 	}
 
 	.lead {
