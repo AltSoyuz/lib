@@ -121,11 +121,11 @@
 			max-width: none;
 			height: auto;
 			margin: 0;
-			padding: calc(var(--safe-top) + var(--space-5)) var(--space-3) var(--space-5);
+			padding: calc(var(--safe-top) + var(--space-2)) var(--space-2) var(--space-4);
 			border: 0;
-			border-right: var(--hairline) solid var(--separator);
+			border-right: 1px solid var(--separator);
 			border-radius: 0;
-			background: var(--card);
+			background: color-mix(in oklab, var(--fill) 50%, var(--background));
 			box-shadow: none;
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
@@ -135,23 +135,27 @@
 			display: flex;
 			align-items: center;
 			gap: var(--space-2);
-			margin: 0 var(--space-3) var(--space-4);
-			font-size: var(--text-title3);
-			font-weight: 700;
+			min-height: 48px;
+			margin: 0 0 var(--space-2);
+			padding: 0 var(--space-2);
+			font-size: var(--text-body);
+			font-weight: 600;
 		}
 
 		.brand img {
-			border-radius: var(--radius-sm);
+			width: 32px;
+			height: 32px;
+			border-radius: var(--radius);
 		}
 
 		a {
 			flex: none;
 			flex-direction: row;
 			justify-content: flex-start;
-			gap: var(--space-3);
+			gap: var(--space-2);
 			max-width: none;
-			min-height: var(--control-height);
-			padding: 0 var(--space-3);
+			min-height: calc(var(--control-height) - 4px);
+			padding: 0 var(--space-2);
 			border-radius: var(--radius);
 			color: var(--foreground);
 			font-size: var(--text-body);
@@ -160,25 +164,30 @@
 		}
 
 		svg {
-			width: 24px;
-			height: 24px;
-			color: var(--tint);
+			width: 16px;
+			height: 16px;
+			stroke-width: 2;
 		}
 
 		a[aria-current='page'] {
-			background: var(--primary);
-			color: var(--primary-foreground);
-			font-weight: 600;
+			background: var(--fill);
+			color: var(--foreground);
+			font-weight: 500;
 		}
 
 		[aria-current='page'] svg {
-			color: var(--primary-foreground);
+			color: var(--tint);
 			fill: none;
+			stroke-width: 2;
+		}
+
+		a:active {
+			transform: none;
 		}
 
 		@media (hover: hover) {
 			a:not([aria-current='page']):hover {
-				background: var(--card-pressed);
+				background: var(--fill);
 			}
 		}
 	}

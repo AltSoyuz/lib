@@ -292,4 +292,95 @@
 			display: none;
 		}
 	}
+
+	/* The grid shows the title first without moving it in the DOM, so Cancel and Save keep their focus order. */
+	@media (min-width: 1024px) {
+		dialog {
+			width: min(512px, 100% - 64px);
+			height: fit-content;
+			max-height: min(760px, 100% - 64px);
+			border: 1px solid var(--separator);
+			border-radius: var(--radius-xl);
+			box-shadow:
+				0 10px 15px -3px rgb(0 0 0 / 10%),
+				0 4px 6px -4px rgb(0 0 0 / 10%);
+			animation: dialog-in 150ms ease-out;
+		}
+
+		dialog[open] {
+			display: flex;
+			flex-direction: column;
+		}
+
+		dialog.closing {
+			animation: dialog-out 100ms ease-in forwards;
+		}
+
+		dialog::backdrop {
+			top: 0;
+			background: rgb(0 0 0 / 50%);
+		}
+
+		form {
+			flex: 1;
+			min-height: 0;
+			height: auto;
+		}
+
+		header {
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			min-height: 0;
+			padding: var(--space-5) var(--space-5) 0;
+		}
+
+		h2 {
+			grid-row: 1;
+			grid-column: 1;
+			font-size: var(--text-title2);
+			text-align: left;
+		}
+
+		.lead {
+			grid-row: 1;
+			grid-column: 2;
+		}
+
+		.trail {
+			grid-column: 3;
+		}
+
+		.close {
+			margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0 0;
+			border-color: transparent;
+			background: transparent;
+			box-shadow: none;
+		}
+
+		.close svg {
+			width: 24px;
+			height: 24px;
+		}
+
+		.body {
+			padding: var(--space-4) var(--space-5) var(--space-5);
+		}
+
+		.body > :global(:last-child) {
+			margin-bottom: 0;
+		}
+	}
+
+	@keyframes dialog-in {
+		from {
+			opacity: 0;
+			transform: scale(0.96);
+		}
+	}
+
+	@keyframes dialog-out {
+		to {
+			opacity: 0;
+			transform: scale(0.96);
+		}
+	}
 </style>

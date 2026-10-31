@@ -177,4 +177,40 @@
 		stroke-linecap: round;
 		stroke-linejoin: round;
 	}
+
+	@media (min-width: 1024px) {
+		.page-header {
+			margin-bottom: var(--space-5);
+		}
+
+		.subtitle {
+			margin-top: var(--space-1);
+		}
+
+		/* No column gap: an empty first column (no back button) would still push the title right. */
+		.inline .bar {
+			grid-template-columns: auto minmax(0, 1fr) auto;
+			column-gap: 0;
+			min-height: var(--control-height);
+		}
+
+		.back {
+			margin-right: var(--space-3);
+		}
+
+		.inline .trail {
+			margin-left: var(--space-3);
+		}
+
+		.inline h1 {
+			font-size: var(--text-title2);
+			text-align: left;
+		}
+
+		.back svg {
+			width: 8px;
+			height: 14px;
+			stroke-width: 2;
+		}
+	}
 </style>

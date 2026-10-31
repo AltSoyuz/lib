@@ -52,6 +52,8 @@
 	/* Small controls on glass inside a bar or a sheet header (back, Cancel). */
 	--glass-shadow-sm: 0 2px 8px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 8%);
 	--ring: var(--brand-300);
+	/* The edge of a card, a list or a banner, an app's own card included: none on a phone, a ring on the web. */
+	--card-edge: none;
 
 	/* iOS 26 corners: small marks, controls, cards and lists, sheets; capsules (999px) for buttons and switches.
 	   A shape inside another keeps the curve concentric: inner radius = outer radius - the gap between them. */
@@ -403,6 +405,7 @@ summary {
 	padding: 0;
 	border-radius: var(--radius-lg);
 	background: var(--card);
+	box-shadow: var(--card-edge);
 	color: var(--card-foreground);
 	list-style: none;
 	overflow: hidden;
@@ -726,6 +729,7 @@ button.cell:disabled {
 	padding: var(--space-3) var(--space-4);
 	border-radius: var(--radius-lg);
 	background: var(--card);
+	box-shadow: var(--card-edge);
 	color: var(--card-foreground);
 	font-size: var(--text-subhead);
 	overflow-wrap: anywhere;
@@ -792,5 +796,300 @@ button.cell:disabled {
 	*::after {
 		transition-duration: 0.01ms !important;
 		animation-duration: 0.01ms !important;
+	}
+}
+
+/* The web look, after shadcn/ui: nothing here applies below 1024px. A color set on :root here is set again for the light theme, whose selector wins otherwise. */
+@media (min-width: 1024px) {
+	/* WCAG contrast of muted-foreground on background / card: 4.7 / 4.7 light, 7.6 / 6.9 dark. */
+	:root {
+		--background: oklch(0.145 0 0);
+		--foreground: oklch(0.985 0 0);
+		--card: oklch(0.205 0 0);
+		--card-foreground: oklch(0.985 0 0);
+		--card-pressed: oklch(0.269 0 0);
+		--sheet: var(--background);
+		--sheet-card: var(--card);
+		--sheet-card-pressed: var(--card-pressed);
+		--muted-foreground: oklch(0.708 0 0);
+		--faint: oklch(0.985 0 0 / 35%);
+		--separator: oklch(1 0 0 / 10%);
+		/* The border of a field or an outline button. */
+		--input: oklch(1 0 0 / 15%);
+		--fill: oklch(0.269 0 0);
+		--fill-selected: oklch(0.34 0 0);
+		--chip: var(--background);
+		--bar: oklch(0.145 0 0 / 80%);
+		--glass: var(--card);
+		--glass-edge: var(--separator);
+		--glass-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+		--glass-shadow-sm: none;
+		--shadow-xs: 0 1px 2px rgb(0 0 0 / 30%);
+		/* A ring, not a border: it takes no room, so a card keeps its size. */
+		--card-edge: 0 0 0 1px var(--separator), var(--shadow-xs);
+
+		--radius-sm: 6px;
+		--radius: 8px;
+		--radius-lg: 12px;
+		--radius-xl: 12px;
+
+		--text-large-title: 1.75rem;
+		--text-title2: 1.125rem;
+		--text-title3: 1rem;
+		--text-body: 0.875rem;
+		--text-callout: 0.875rem;
+		--text-subhead: 0.8125rem;
+		--text-footnote: 0.75rem;
+		--text-caption: 0.75rem;
+		--leading: 1.45;
+		--leading-tight: 1.25;
+
+		--control-height: 36px;
+	}
+
+	:root[data-theme='light'] {
+		--background: #fff;
+		--foreground: oklch(0.145 0 0);
+		--card: #fff;
+		--card-foreground: oklch(0.145 0 0);
+		--card-pressed: oklch(0.97 0 0);
+		--sheet: #fff;
+		--sheet-card: #fff;
+		--sheet-card-pressed: oklch(0.97 0 0);
+		--muted-foreground: oklch(0.556 0 0);
+		--faint: oklch(0.708 0 0);
+		--separator: oklch(0.922 0 0);
+		--input: oklch(0.922 0 0);
+		--fill: oklch(0.945 0 0);
+		--fill-selected: #fff;
+		--chip: #fff;
+		--bar: rgb(255 255 255 / 80%);
+		--glass: #fff;
+		--glass-edge: var(--separator);
+		--glass-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+		--glass-shadow-sm: none;
+		--shadow-xs: 0 1px 2px rgb(0 0 0 / 5%);
+	}
+
+	.tabbed {
+		--rail-width: 256px;
+	}
+
+	html {
+		font-size: 100%;
+	}
+
+	h1 {
+		font-weight: 700;
+		letter-spacing: -0.025em;
+	}
+
+	.section > h2 {
+		margin-bottom: var(--space-3);
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+
+	button:active:not(:disabled),
+	.button:active {
+		opacity: 1;
+	}
+
+	.filled,
+	.tinted,
+	.glass {
+		min-height: var(--control-height);
+		padding: 0 var(--space-4);
+		border-radius: var(--radius);
+		font-weight: 500;
+	}
+
+	.filled {
+		box-shadow: var(--shadow-xs);
+	}
+
+	.filled.destructive {
+		background: var(--destructive);
+		color: #fff;
+	}
+
+	.tinted {
+		background: var(--fill);
+		color: var(--foreground);
+	}
+
+	.glass {
+		border: 1px solid var(--input);
+		background: var(--background);
+		box-shadow: var(--shadow-xs);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+
+	.round {
+		padding: 0;
+		border-radius: var(--radius);
+	}
+
+	@media (hover: hover) {
+		button:hover:not(:disabled),
+		.button:hover {
+			opacity: 0.85;
+		}
+
+		.filled:hover:not(:disabled) {
+			opacity: 0.9;
+		}
+
+		:is(.tinted, .glass):hover:not(:disabled) {
+			opacity: 1;
+			background: var(--card-pressed);
+		}
+	}
+
+	/* Text fields only: a checkbox, a radio, a slider or a switch keeps its own box. An app's bare field sets border: 0. */
+	input:not([type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [role='switch']),
+	select,
+	textarea {
+		border: 1px solid var(--input);
+		border-radius: var(--radius);
+		background: transparent;
+		font-size: var(--text-body);
+		transition: border-color 150ms ease;
+	}
+
+	input:not([type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [role='switch']):focus-visible,
+	select:focus-visible,
+	textarea:focus-visible {
+		border-color: var(--ring);
+		outline: 3px solid color-mix(in oklab, var(--ring) 35%, transparent);
+		outline-offset: 0;
+	}
+
+	textarea {
+		padding: var(--space-2) var(--space-3);
+	}
+
+	/* A field in a list keeps its phone look: the list is its box and the cell carries the focus ring. */
+	.list :is(input, select, textarea) {
+		border: 0;
+	}
+
+	.list :is(input, select, textarea):focus-visible {
+		outline: none;
+	}
+
+	.list textarea {
+		padding: var(--space-3) var(--space-4);
+	}
+
+	.list > li + li::before {
+		left: 0;
+	}
+
+	.cell {
+		padding: var(--space-3) var(--space-4);
+	}
+
+	.cell > button:not(.cell) {
+		margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0;
+	}
+
+	.cell > button:is(.filled, .tinted, .glass) {
+		margin-right: 0;
+	}
+
+	.cell.field input {
+		margin: calc(-1 * var(--space-3)) 0;
+	}
+
+	.cell.field.stacked input {
+		margin: 0 0 calc(-1 * var(--space-3));
+	}
+
+	.cell.chevron::after {
+		width: 7px;
+		height: 7px;
+		border-width: 1.5px;
+		border-color: var(--muted-foreground);
+	}
+
+	.footer {
+		margin: var(--space-2) 0 0;
+	}
+
+	.segmented {
+		width: fit-content;
+		max-width: 100%;
+		border-radius: calc(var(--radius) + 3px);
+	}
+
+	.segmented button {
+		flex: none;
+		padding: 0 var(--space-3);
+		border-radius: calc(var(--radius) + 3px);
+		font-size: var(--text-body);
+		font-weight: 500;
+	}
+
+	.segmented button[aria-pressed='true'] {
+		box-shadow: var(--shadow-xs);
+		font-weight: 500;
+	}
+
+	/* Chips wrap on a desktop, where nothing swipes sideways. */
+	.chip-row {
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0 0 var(--space-4);
+		padding: 0;
+		overflow: visible;
+	}
+
+	.chip-row > :is(button, label) {
+		min-height: calc(var(--control-height) - 4px);
+		padding: 0 var(--space-3);
+		border: 1px solid var(--input);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-xs);
+		font-size: var(--text-body);
+		font-weight: 500;
+	}
+
+	.chip-row button[aria-pressed='true'] {
+		border-color: var(--primary);
+		font-weight: 500;
+	}
+
+	@media (hover: hover) {
+		.chip-row button:not([aria-pressed='true']):hover {
+			opacity: 1;
+			background: var(--card-pressed);
+		}
+	}
+
+	.banner {
+		font-size: var(--text-body);
+	}
+
+	.banner > button {
+		margin: calc(-1 * var(--space-1)) 0;
+	}
+
+	.muted {
+		font-size: var(--text-body);
+	}
+}
+
+/* A touch screen at desktop width keeps a finger's targets and iOS's 16px fields. */
+@media (min-width: 1024px) and (pointer: coarse) {
+	:root {
+		--control-height: 44px;
+	}
+
+	input,
+	select,
+	textarea {
+		font-size: max(16px, var(--text-body));
 	}
 }

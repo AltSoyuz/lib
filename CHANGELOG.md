@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/app.css`: a web look from 1024px wide, after shadcn/ui; below 1024px every page renders as before, pixel for
+  pixel. Neutral surfaces (white or near black, a tinted sidebar), 1px edges, 8px controls 36px tall, 14px text on a
+  16px root, 28px titles, Tabs-like `.segmented`, outline `.glass`, secondary `.tinted`, wrapping outline chips, text
+  fields with a border and a soft focus ring. A touch screen at that width keeps 44px targets and 16px fields.
+- `--card-edge`: the edge of a card, none on a phone and a 1px ring with a soft shadow on the web; `.list` and
+  `.banner` carry it. An app's own card on `--card` adds `box-shadow: var(--card-edge)`, or it disappears on the
+  white page of the web look in light mode.
+- `--input` (web only): the border of a text field or an outline button.
+
+### Changed
+
+- `web/TabBar.svelte`: the sidebar is shadcn's: 256px, tinted, 32px rows with 16px icons, the current page on a muted
+  fill with its icon in the tint, instead of a filled purple row.
+- `web/TitleBar.svelte`: from 1024px, an inline title sits on the left after the back button, at a section title's
+  size.
+- `web/Sheet.svelte`: from 1024px, a dialog as tall as its content (512px wide at most), the title on the left,
+  Cancel and Save or the close button on its right, a fade instead of the slide.
+
+### Migration
+
+- A text field outside a `.list` shows a border on the web: a field the app draws bare inside its own box (a search
+  pill, a composer) sets `border: 0`, as the kit's fields in a list do.
+- A button keeps its padding and weight; only `.filled`, `.tinted` and `.glass` change shape on the web.
+
 ## [0.6.0]
 
 ### Added
