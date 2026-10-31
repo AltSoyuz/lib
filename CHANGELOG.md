@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0]
+
 ### Added
 
 - `web/app.css`: a web look from 1024px wide, after shadcn/ui; below 1024px every page renders as before, pixel for
