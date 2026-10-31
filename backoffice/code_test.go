@@ -1,7 +1,10 @@
 package backoffice
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -362,5 +365,59 @@ func TestTheEmailCarriesTheCodeAndNoLink(t *testing.T) {
 				t.Errorf("%s holds %q:\n%s", name, banned, part)
 			}
 		}
+	}
+}
+
+func TestOnSignInAndAlsoRunInTheSignInTransaction(t *testing.T) {
+	a := newCodeApp(t, false)
+	type call struct{ email, joined, via string }
+	var calls []call
+	refuse := "refused@example.org"
+	a.bo.cfg.OnSignIn = func(ctx context.Context, tx *sql.Tx, u User, joined, via string) error {
+		calls = append(calls, call{u.Email, joined, via})
+		if u.Email == refuse {
+			return errors.New("refused_by_the_app")
+		}
+		return nil
+	}
+
+	a.openCode("first@example.org", "123123", time.Minute)
+	status(t, a.verify("first@example.org", "123123"), http.StatusNoContent, "")
+	a.openCode("first@example.org", "456456", time.Minute)
+	status(t, a.verify("first@example.org", "456456"), http.StatusNoContent, "")
+
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/password", nil)
+	var seen string
+	if _, err := a.bo.SignIn(w, r, "second@example.org", "password", func(tx *sql.Tx, u User, joined string) error {
+		seen = joined
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if seen != JoinedOpen {
+		t.Fatalf("also saw joined %q", seen)
+	}
+
+	a.openCode(refuse, "789789", time.Minute)
+	if w := a.verify(refuse, "789789"); w.Code != http.StatusInternalServerError || len(w.Result().Cookies()) != 0 {
+		t.Fatalf("a sign-in OnSignIn refused: %d %v", w.Code, w.Result().Cookies())
+	}
+	var accounts int
+	if err := a.db.QueryRow(`SELECT count(*) FROM users WHERE email = ?`, refuse).Scan(&accounts); err != nil {
+		t.Fatal(err)
+	}
+	if _, open := a.lastCode(refuse); accounts != 0 || !open {
+		t.Fatalf("a refused sign-in left an account (%d) or closed its code", accounts)
+	}
+
+	want := []call{
+		{"first@example.org", JoinedFirstUser, "code"},
+		{"first@example.org", "", "code"},
+		{"second@example.org", JoinedOpen, "password"},
+		{refuse, JoinedOpen, "code"},
+	}
+	if fmt.Sprint(calls) != fmt.Sprint(want) {
+		t.Fatalf("OnSignIn calls:\n%v\nwant\n%v", calls, want)
 	}
 }

@@ -142,7 +142,7 @@ func (b *Backoffice) VerifyCode(w http.ResponseWriter, r *http.Request) {
 		httpserver.WriteError(w, r, http.StatusInternalServerError, fmt.Errorf("internal: %w", err))
 		return
 	}
-	_, err = b.signIn(w, r, email, "code", now, func(tx *sql.Tx) error {
+	_, err = b.signIn(w, r, email, "code", now, func(tx *sql.Tx, _ User, _ string) error {
 		closed, err := closeCode(r.Context(), tx, id, now)
 		if err != nil {
 			return err
@@ -168,15 +168,16 @@ func (b *Backoffice) VerifyCode(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// SignIn signs the request in as email, an address the app has proven (by a code, a password, a provider): in one
-// transaction it admits the account (Admit), opens a session and writes the audit rows (AuditSignIn, with via), then
-// sets the session cookie. A restrained account gets ErrRestrained and no cookie.
-func (b *Backoffice) SignIn(w http.ResponseWriter, r *http.Request, email, via string) (User, error) {
-	return b.signIn(w, r, email, via, time.Now().UTC(), nil)
+// SignIn signs the request in as email, an address the app has proven (by a password, a provider): in one
+// transaction it admits the account (Admit), runs Config.OnSignIn then also (when not nil) with the account and why
+// it was created ("" for an existing one), opens a session and writes the audit rows (AuditSignIn, with via), then
+// sets the session cookie. A restrained account gets ErrRestrained and no cookie; an error of also or OnSignIn
+// rolls the sign-in back and is returned as is.
+func (b *Backoffice) SignIn(w http.ResponseWriter, r *http.Request, email, via string, also func(tx *sql.Tx, u User, joined string) error) (User, error) {
+	return b.signIn(w, r, email, via, time.Now().UTC(), also)
 }
 
-// signIn runs also, when set, in the sign-in transaction right after Admit.
-func (b *Backoffice) signIn(w http.ResponseWriter, r *http.Request, email, via string, now time.Time, also func(tx *sql.Tx) error) (User, error) {
+func (b *Backoffice) signIn(w http.ResponseWriter, r *http.Request, email, via string, now time.Time, also func(tx *sql.Tx, u User, joined string) error) (User, error) {
 	ctx := r.Context()
 	token, hash, err := sessions.NewToken()
 	if err != nil {
@@ -192,8 +193,13 @@ func (b *Backoffice) signIn(w http.ResponseWriter, r *http.Request, email, via s
 		if u, joined, err = b.Admit(ctx, tx, email, now); err != nil {
 			return err
 		}
+		if b.cfg.OnSignIn != nil {
+			if err := b.cfg.OnSignIn(ctx, tx, u, joined, via); err != nil {
+				return err
+			}
+		}
 		if also != nil {
-			if err := also(tx); err != nil {
+			if err := also(tx, u, joined); err != nil {
 				return err
 			}
 		}

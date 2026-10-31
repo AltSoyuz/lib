@@ -72,6 +72,9 @@ type Config struct {
 	Sessions sessions.SessionPolicy
 	// Features are the parts of the app an admin can keep to the admins, in the order the back office lists them.
 	Features []Feature
+	// OnSignIn runs in every sign-in transaction (a code, SignIn) right after Admit, before the session exists: the
+	// app's own steps, such as dropping a password set before the address was proven. An error refuses the sign-in.
+	OnSignIn func(ctx context.Context, tx *sql.Tx, u User, joined, via string) error
 	// AppName names the app in the email that carries a sign-in code.
 	AppName string
 	// CodeEmail writes that email (subject, text, html) in the app's language; nil writes it in English.

@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `RequestCode` (`POST /api/v1/sign-in/code`) and `VerifyCode` (`POST /api/v1/sign-in/verify`), with the same
   limits (5 codes per address in 15 minutes, 5 wrong tries close a code, 5 requests and 20 verifications per
   minute and address) and the code logged as `login code (dev)` when the mailer is a blackhole. `SignIn` opens the
-  session of an address the app proved another way (a password, a provider). `HandleMe` (`GET /api/v1/me`) and
+  session of an address the app proved another way (a password, a provider), with `also` for that call's own steps in its transaction; `Config.OnSignIn` runs the app's steps in every sign-in transaction, right after `Admit`. `HandleMe` (`GET /api/v1/me`) and
   `HandleSignOut` (`POST /api/v1/sign-out`). `Config.AppName` names the app in the email, `Config.CodeEmail`
   writes it in another language. `Me` carries `user_id` and `email`.
 - `auth/schema/migrations/004_login_codes.sql`: the `attempts` column the code sign-in counts wrong tries in
