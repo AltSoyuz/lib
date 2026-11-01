@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0]
+
 ### Added
 
 - `push`: Web Push notifications (RFC 8030, 8291, 8292), from Explore's `internal/push`, at their second use
