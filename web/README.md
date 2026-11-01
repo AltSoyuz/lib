@@ -27,6 +27,7 @@ kit-check:  # in make check: the copy is never edited by hand
 | `SignIn.svelte` | The sign-in by a 6-digit code sent by email, against lib's `backoffice` (`POST /api/v1/sign-in/code`, `POST /api/v1/sign-in/verify`): email step, code step that outlives a reload of the app, resend after 30 s; `children` goes under the email step. |
 | `text.ts` | The words the kit shows outside `admin/`, in English: `useText({...})` in the root layout's script puts an app in its own language. |
 | `service-worker.ts` | Offline shell, precache, push notifications: `serve({ name, icon })` from `src/service-worker.ts`. |
+| `push.ts` | The phone side of the `push` package: `pushState(standalone)`, `turnOn(key)` from a tap, `turnOff()`. |
 | `viewport.ts` | Pure helper of the viewport fix, tested with `node --test`. |
 | `Tour.svelte`, `tour.ts` | The first-run tour as an iOS onboarding, over the whole screen: a welcome (logo, a row per thing the app does, a note), then one swiped page per step with the app's scene of its screen, a title, one sentence and Try it. The app writes `TourWelcome` and `TourStep`s, draws each scene on `.card`, `.label` and `.pill`, opens the tour and keeps its page (`onpage`, `ontry`, `onfinish`); `shownInTour(items, admin)` keeps what every account has. |
 | `features.svelte.ts` | The features of lib's `backoffice`, kept on the phone: `initFeatures(key)` once in the root layout, then `featureOn(name, role)` where the app shows a feature. |

@@ -55,6 +55,7 @@ node --test web/*.test.ts
 | `logger` | Small structured logger. |
 | `mailer` | Blackhole, SMTP, AWS SES v2, Resend email. |
 | `oauthgoogle` | Google Sign-In OAuth provider (code flow + PKCE). |
+| `push` | Web Push to the phones that turned it on, `schema.sql` to copy, `web/push.ts` for the phone side. |
 | `web/` | UI kit (CSS, Svelte, TS) copied by the apps, not a Go package. |
 
 ## Release notes

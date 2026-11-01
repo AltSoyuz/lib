@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `push`: Web Push notifications (RFC 8030, 8291, 8292), from Explore's `internal/push`, at their second use
+  (homeapp). `New(Config{DB, Backoffice, Keys, Subject, Welcome})`, `Mount` for `GET /api/v1/push` and
+  `PUT`/`DELETE /api/v1/push/subscription`, `Send` returning how many phones took the message, `NewKeys` and
+  `ParseKeys` for the VAPID key; `schema.sql` is Explore's `push_subscriptions`. Explore keeps its own copy until it
+  moves to this package.
+- `web/push.ts`: the phone side, from Explore's `push.ts` and `notifications.ts`.
+
 ## [0.8.0]
 
 ### Added
