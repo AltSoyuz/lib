@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/TitleBar.svelte`: `onmenu` makes the title a button with a chevron down, SwiftUI's title menu, for switching
+  what the page belongs to (Explore's tours). Pages without it are unchanged.
+
 ## [0.9.0]
 
 ### Added

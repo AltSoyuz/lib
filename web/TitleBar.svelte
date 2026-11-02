@@ -6,12 +6,14 @@
 
 	// inline: a compact bar that stays at the top; otherwise a large title that scrolls with the page.
 	// back: a chevron left of an inline title, named "Back to <label>". trailing: what sits right of the title (an account button).
+	// onmenu: the title is a button with a chevron down, SwiftUI's title menu, for what the page belongs to (a tour, a space).
 	// banners: the app's own banners, above the offline and new version ones; children: controls under them, which stay at the top with an inline bar.
 	let {
 		title,
 		subtitle,
 		inline = false,
 		back,
+		onmenu,
 		trailing,
 		banners,
 		children
@@ -20,6 +22,7 @@
 		subtitle?: string;
 		inline?: boolean;
 		back?: { label: string; onclick: () => void };
+		onmenu?: () => void;
 		trailing?: Snippet;
 		banners?: Snippet;
 		children?: Snippet;
@@ -33,7 +36,15 @@
 				<svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg>
 			</button>
 		{/if}
-		<h1>{title}</h1>
+		<h1>
+			{#if onmenu}
+				<button type="button" class="title-menu" onclick={onmenu}>
+					{title}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+				</button>
+			{:else}
+				{title}
+			{/if}
+		</h1>
 		{#if trailing}
 			<div class="trail">{@render trailing()}</div>
 		{/if}
@@ -76,6 +87,35 @@
 	h1 {
 		min-width: 0;
 		overflow-wrap: anywhere;
+	}
+
+	.title-menu {
+		display: inline;
+		min-height: 0;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		letter-spacing: inherit;
+		text-align: inherit;
+		cursor: pointer;
+	}
+
+	.title-menu:active {
+		opacity: 0.6;
+	}
+
+	.title-menu svg {
+		width: 0.6em;
+		height: 0.6em;
+		margin-left: 0.2em;
+		vertical-align: 0.05em;
+		fill: none;
+		stroke: var(--muted-foreground);
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	.subtitle {
