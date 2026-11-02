@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0]
+
 ### Added
 
 - `web/TitleBar.svelte`: `onmenu` makes the title a button with a chevron down, SwiftUI's title menu, for switching
