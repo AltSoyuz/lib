@@ -16,7 +16,7 @@ kit-check:  # in make check: the copy is never edited by hand
 
 | File | What |
 |---|---|
-| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, buttons (`.filled`, `.tinted`, `.glass`, `.round`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`. Two looks: iOS on a phone, shadcn/ui's from 1024px wide, by tokens and one media query. |
+| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, native controls (a bare `input[type=search]` is the search field), buttons (`.filled`, `.tinted`, `.glass`, `.round`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`. Two looks: iOS on a phone, shadcn/ui's from 1024px wide, by tokens and one media query. |
 | `Shell.svelte` | The page frame: `.app`, the opaque status bar strip, `main.page`, a `floating` snippet for the tab bar. |
 | `TabBar.svelte` | Floating capsule on a phone, sidebar from 1024px. Needs `.tabbed` on the shell. |
 | `TitleBar.svelte` | Large or inline title, back button, `trailing` and `banners` snippets, then the offline and new version banners. |
@@ -41,6 +41,8 @@ kit-check:  # in make check: the copy is never edited by hand
   app draws bare inside its own box sets `border: 0`.
 - Icons are the app's: a component with `<svelte:options namespace="svg" />` rendering paths for a name, passed
   to `TabBar` as the `icon` snippet.
+- A native control is drawn by the kit: an app writes it bare (`<input type="search">` is the search field: full width,
+  a pill with a magnifier) and never draws its own version of one, so every app looks the same.
 - Something enters the kit when a second app uses it; until then it stays in the app.
 - Compatibility as for the Go packages: a change that breaks an app is a new minor version, named in CHANGELOG.md,
   and ships with the migration of the apps that copy the kit.

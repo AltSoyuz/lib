@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0]
+
+### Added
+
+- `web/app.css`: a bare `<input type="search">` is the search field, as Compass drew it: full width, a pill on
+  `--fill` with a magnifier on a phone, a bordered field with the magnifier from 1024px. Migration: an app drops its own
+  search component (Compass's `SearchField.svelte`) for the bare input, whose own styles would now fight the kit's.
+
 ## [0.10.0]
 
 ### Added

@@ -367,6 +367,21 @@ input[type='number'] {
 	font-variant-numeric: tabular-nums;
 }
 
+/* A bare search field is the kit's: full width, a pill with a magnifier (iOS's gray, readable in both themes). */
+input[type='search'] {
+	-webkit-appearance: none;
+	appearance: none;
+	display: block;
+	width: 100%;
+	padding-left: calc(var(--space-3) + 18px + var(--space-2));
+	border-radius: var(--radius-pill);
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.75' cy='10.75' r='6.25'/%3E%3Cpath d='m15.5 15.5 4.75 4.75'/%3E%3C/svg%3E") var(--space-3) center / 18px no-repeat var(--fill);
+}
+
+input[type='search']::-webkit-search-decoration {
+	-webkit-appearance: none;
+}
+
 input::placeholder,
 textarea::placeholder {
 	color: var(--muted-foreground);
@@ -956,6 +971,10 @@ button.cell:disabled {
 		background: transparent;
 		font-size: var(--text-body);
 		transition: border-color 150ms ease;
+	}
+
+	input[type='search'] {
+		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.75' cy='10.75' r='6.25'/%3E%3Cpath d='m15.5 15.5 4.75 4.75'/%3E%3C/svg%3E") var(--space-3) center / 16px no-repeat transparent;
 	}
 
 	input:not([type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [role='switch']):focus-visible,
