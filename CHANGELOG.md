@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1]
+
 ### Fixed
 
 - `web/Shell.svelte`: every navigation blurred the focused field, even one that stays on the page, so a search writing
