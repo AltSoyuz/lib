@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0]
+
 ### Added
 
 - `web/TabBar.svelte`: from 1024px a button in the sidebar's header, and Cmd or Ctrl + `\`, fold the sidebar to a 48px
