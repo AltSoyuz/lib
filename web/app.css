@@ -789,6 +789,11 @@ button.cell:disabled {
 	text-align: center;
 }
 
+.empty-title {
+	color: var(--foreground);
+	font-weight: 600;
+}
+
 .num {
 	font-variant-numeric: tabular-nums;
 }

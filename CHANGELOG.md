@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/app.css`: `.empty-title`, the title of an empty state above its `.empty-text` sentence, as Compass and Maun each
+  drew it. Additive: an app's own scoped `.empty-title` still wins; it drops it at its next lib bump.
+
 ## [0.11.0]
 
 ### Added
