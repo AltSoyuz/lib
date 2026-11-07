@@ -125,7 +125,7 @@
 			border: 0;
 			border-right: 1px solid var(--separator);
 			border-radius: 0;
-			background: color-mix(in oklab, var(--fill) 50%, var(--background));
+			background: color-mix(in oklab, var(--foreground) 4%, var(--background));
 			box-shadow: none;
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
@@ -143,8 +143,8 @@
 		}
 
 		.brand img {
-			width: 32px;
-			height: 32px;
+			width: 28px;
+			height: 28px;
 			border-radius: var(--radius);
 		}
 
@@ -154,8 +154,8 @@
 			justify-content: flex-start;
 			gap: var(--space-2);
 			max-width: none;
-			min-height: calc(var(--control-height) - 4px);
-			padding: 0 var(--space-2);
+			min-height: calc(var(--control-height) + 2px);
+			padding: 0 var(--space-3);
 			border-radius: var(--radius);
 			color: var(--foreground);
 			font-size: var(--text-body);
@@ -169,14 +169,14 @@
 			stroke-width: 2;
 		}
 
+		/* The selected row, as in a SwiftUI sidebar: a rounded highlight in the accent color. */
 		a[aria-current='page'] {
-			background: var(--fill);
-			color: var(--foreground);
-			font-weight: 500;
+			background: var(--tint-soft);
+			color: var(--tint);
+			font-weight: 600;
 		}
 
 		[aria-current='page'] svg {
-			color: var(--tint);
 			fill: none;
 			stroke-width: 2;
 		}

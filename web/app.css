@@ -819,76 +819,43 @@ button.cell:disabled {
 	}
 }
 
-/* The web look, after shadcn/ui: nothing here applies below 1024px. A color set on :root here is set again for the light theme, whose selector wins otherwise. */
+/* The desktop look, after SwiftUI on a Mac: nothing here applies below 1024px. It keeps the phone's grouped colors, whose
+   contrast is checked above, and takes a window's metrics: 13px text, 28px controls, tighter corners. */
 @media (min-width: 1024px) {
-	/* WCAG contrast of muted-foreground on background / card: 4.7 / 4.7 light, 7.6 / 6.9 dark. */
-	:root {
-		--background: oklch(0.145 0 0);
-		--foreground: oklch(0.985 0 0);
-		--card: oklch(0.205 0 0);
-		--card-foreground: oklch(0.985 0 0);
-		--card-pressed: oklch(0.269 0 0);
-		--sheet: var(--background);
-		--sheet-card: var(--card);
-		--sheet-card-pressed: var(--card-pressed);
-		--muted-foreground: oklch(0.708 0 0);
-		--faint: oklch(0.985 0 0 / 35%);
-		--separator: oklch(1 0 0 / 10%);
-		/* The border of a field or an outline button. */
-		--input: oklch(1 0 0 / 15%);
-		--fill: oklch(0.269 0 0);
-		--fill-selected: oklch(0.34 0 0);
-		--chip: var(--background);
-		--bar: oklch(0.145 0 0 / 80%);
+	/* The light theme sets these again below 1024px with a selector that wins over :root alone. */
+	:root,
+	:root[data-theme='light'] {
+		/* A fine rule: the phone's separator is drawn for a thick finger-sized row, too heavy for a desktop's. */
+		--separator: color-mix(in oklab, var(--foreground) 11%, transparent);
+		/* A hairline ring and a breath of shadow, as a grouped form on a Mac: the ring takes no room, so a card keeps its size. */
+		--card-edge: 0 0 0 0.5px color-mix(in oklab, var(--separator) 70%, transparent), 0 1px 2px rgb(0 0 0 / 5%);
+		/* The border of a field or a bordered button. */
+		--input: color-mix(in oklab, var(--foreground) 16%, transparent);
+		--shadow-xs: 0 0.5px 1px rgb(0 0 0 / 14%);
 		--glass: var(--card);
 		--glass-edge: var(--separator);
-		--glass-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+		--glass-shadow: 0 8px 24px rgb(0 0 0 / 22%);
 		--glass-shadow-sm: none;
-		--shadow-xs: 0 1px 2px rgb(0 0 0 / 30%);
-		/* A ring, not a border: it takes no room, so a card keeps its size. */
-		--card-edge: 0 0 0 1px var(--separator), var(--shadow-xs);
+		--chip: var(--card);
+		--bar: color-mix(in oklab, var(--background) 80%, transparent);
 
-		--radius-sm: 6px;
-		--radius: 8px;
-		--radius-lg: 12px;
+		--radius-sm: 5px;
+		--radius: 7px;
+		--radius-lg: 10px;
 		--radius-xl: 12px;
 
-		--text-large-title: 1.75rem;
-		--text-title2: 1.125rem;
-		--text-title3: 1rem;
-		--text-body: 0.875rem;
-		--text-callout: 0.875rem;
-		--text-subhead: 0.8125rem;
-		--text-footnote: 0.75rem;
-		--text-caption: 0.75rem;
-		--leading: 1.45;
-		--leading-tight: 1.25;
+		--text-large-title: 1.625rem;
+		--text-title2: 1.0625rem;
+		--text-title3: 0.9375rem;
+		--text-body: 0.8125rem;
+		--text-callout: 0.8125rem;
+		--text-subhead: 0.75rem;
+		--text-footnote: 0.6875rem;
+		--text-caption: 0.6875rem;
+		--leading: 1.4;
+		--leading-tight: 1.2;
 
-		--control-height: 36px;
-	}
-
-	:root[data-theme='light'] {
-		--background: #fff;
-		--foreground: oklch(0.145 0 0);
-		--card: #fff;
-		--card-foreground: oklch(0.145 0 0);
-		--card-pressed: oklch(0.97 0 0);
-		--sheet: #fff;
-		--sheet-card: #fff;
-		--sheet-card-pressed: oklch(0.97 0 0);
-		--muted-foreground: oklch(0.556 0 0);
-		--faint: oklch(0.708 0 0);
-		--separator: oklch(0.922 0 0);
-		--input: oklch(0.922 0 0);
-		--fill: oklch(0.945 0 0);
-		--fill-selected: #fff;
-		--chip: #fff;
-		--bar: rgb(255 255 255 / 80%);
-		--glass: #fff;
-		--glass-edge: var(--separator);
-		--glass-shadow: 0 4px 12px rgb(0 0 0 / 8%);
-		--glass-shadow-sm: none;
-		--shadow-xs: 0 1px 2px rgb(0 0 0 / 5%);
+		--control-height: 28px;
 	}
 
 	.tabbed {
@@ -940,7 +907,7 @@ button.cell:disabled {
 
 	.glass {
 		border: 1px solid var(--input);
-		background: var(--background);
+		background: var(--card);
 		box-shadow: var(--shadow-xs);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
@@ -973,13 +940,13 @@ button.cell:disabled {
 	textarea {
 		border: 1px solid var(--input);
 		border-radius: var(--radius);
-		background: transparent;
+		background: var(--card);
 		font-size: var(--text-body);
 		transition: border-color 150ms ease;
 	}
 
 	input[type='search'] {
-		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.75' cy='10.75' r='6.25'/%3E%3Cpath d='m15.5 15.5 4.75 4.75'/%3E%3C/svg%3E") var(--space-3) center / 16px no-repeat transparent;
+		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.75' cy='10.75' r='6.25'/%3E%3Cpath d='m15.5 15.5 4.75 4.75'/%3E%3C/svg%3E") var(--space-3) center / 16px no-repeat var(--card);
 	}
 
 	input:not([type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [role='switch']):focus-visible,
@@ -1007,12 +974,13 @@ button.cell:disabled {
 		padding: var(--space-3) var(--space-4);
 	}
 
+	/* Rows are inset like their text, as in a Mac form. */
 	.list > li + li::before {
-		left: 0;
+		left: var(--space-3);
 	}
 
 	.cell {
-		padding: var(--space-3) var(--space-4);
+		padding: 7px var(--space-3);
 	}
 
 	.cell > button:not(.cell) {
