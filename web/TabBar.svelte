@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { sidebar, toggleSidebar } from './sidebar.svelte';
+	import { text } from './text';
 
 	// A capsule floating over the bottom of the page on a phone, a sidebar from 1024px; icon renders the paths of a tab's 24x24 icon.
 	let {
@@ -15,13 +17,36 @@
 
 	const current = (href: string) =>
 		href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href);
+
+	// Cmd or Ctrl and \ show and hide the sidebar, the View menu command of a Mac app; only where there is a sidebar.
+	function onkeydown(e: KeyboardEvent) {
+		if (e.key !== '\\' || !(e.metaKey || e.ctrlKey) || e.altKey || e.shiftKey) return;
+		if (!matchMedia('(min-width: 1024px)').matches) return;
+		e.preventDefault();
+		toggleSidebar();
+	}
 </script>
 
-<nav class="tabbar" aria-label="Main">
-	<span class="brand">
-		<img src={brand.logo} alt="" width="28" height="28" />
-		{brand.name}
-	</span>
+<svelte:window {onkeydown} />
+
+<nav class="tabbar" id="kit-sidebar" aria-label="Main">
+	<div class="head">
+		<span class="brand">
+			<img src={brand.logo} alt="" width="28" height="28" />
+			{brand.name}
+		</span>
+		<button
+			type="button"
+			class="toggle"
+			aria-label={sidebar.collapsed ? text.showSidebar : text.hideSidebar}
+			title={sidebar.collapsed ? text.showSidebar : text.hideSidebar}
+			aria-expanded={!sidebar.collapsed}
+			aria-controls="kit-sidebar"
+			onclick={toggleSidebar}
+		>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3" /><path d="M9.5 5v14" /></svg>
+		</button>
+	</div>
 	{#each tabs as t (t.href)}
 		<a href={t.href} aria-current={current(t.href) ? 'page' : undefined}>
 			<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -54,7 +79,7 @@
 		backdrop-filter: var(--glass-blur);
 	}
 
-	.brand {
+	.head {
 		display: none;
 	}
 
@@ -131,17 +156,59 @@
 			backdrop-filter: none;
 		}
 
+		.head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin: 0 0 var(--space-2);
+		}
+
 		.brand {
 			display: flex;
 			align-items: center;
 			gap: var(--space-2);
 			min-height: 48px;
-			margin: 0 0 var(--space-2);
 			padding: 0 var(--space-2);
 			font-size: var(--text-body);
 			font-weight: 600;
 		}
 
+		.toggle {
+			display: grid;
+			place-items: center;
+			flex: none;
+			width: 28px;
+			height: 28px;
+			padding: 0;
+			border-radius: var(--radius);
+			background: transparent;
+			color: var(--muted-foreground);
+		}
+
+		.toggle svg {
+			width: 18px;
+			height: 18px;
+			color: inherit;
+			stroke-width: 1.7;
+		}
+
+		@media (hover: hover) {
+			.toggle:hover {
+				background: var(--fill);
+				color: var(--foreground);
+			}
+		}
+
+		/* Folded: a strip of the rail's width that keeps the button, the sidebar's one way back. */
+		:global(:root[data-sidebar='collapsed']) .head {
+			justify-content: center;
+			margin-bottom: 0;
+		}
+
+		:global(:root[data-sidebar='collapsed']) .brand,
+		:global(:root[data-sidebar='collapsed']) a {
+			display: none;
+		}
 		.brand img {
 			width: 28px;
 			height: 28px;
@@ -185,6 +252,12 @@
 
 		a:active {
 			transform: none;
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			.tabbar {
+				transition: width 0.2s ease;
+			}
 		}
 
 		@media (hover: hover) {

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `web/TabBar.svelte`: from 1024px a button in the sidebar's header, and Cmd or Ctrl + `\`, fold the sidebar to a 48px
+  strip that keeps the button, as the HIG asks of a sidebar (a show/hide button or command; not hidden by default). The
+  choice is kept by the browser (`web/sidebar.svelte.ts`, `<html data-sidebar>`), the page takes the room, and the button
+  is absent on a phone. New words in `web/text.ts`: `hideSidebar` and `showSidebar`; an app in another language adds
+  them with `useText` at its bump (the English ones show until then).
+
 ### Changed
 
 - `web/` desktop look (from 1024px wide), after SwiftUI on a Mac instead of shadcn/ui. A phone is untouched: everything

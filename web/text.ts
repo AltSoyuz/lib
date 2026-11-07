@@ -7,6 +7,8 @@ export const text = {
 	saving: 'Saving…',
 	discardChanges: 'Discard your changes?',
 	back: (label: string) => `Back to ${label}`,
+	hideSidebar: 'Hide sidebar',
+	showSidebar: 'Show sidebar',
 	offline: 'You are offline. Nothing new will load until the connection is back.',
 	newVersion: 'A new version is available.',
 	reconnected: 'The connection is back.',

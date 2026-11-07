@@ -864,6 +864,17 @@ button.cell:disabled {
 		--rail-width: 256px;
 	}
 
+	/* The sidebar folded to its strip (sidebar.svelte.ts writes data-sidebar on <html>). */
+	:root[data-sidebar='collapsed'] .tabbed {
+		--rail-width: 48px;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.tabbed {
+			transition: padding-left 0.2s ease;
+		}
+	}
+
 	html {
 		font-size: 100%;
 	}
