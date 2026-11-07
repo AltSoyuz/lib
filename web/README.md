@@ -16,9 +16,9 @@ kit-check:  # in make check: the copy is never edited by hand
 
 | File | What |
 |---|---|
-| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, native controls (a bare `input[type=search]` is the search field), buttons (`.filled`, `.tinted`, `.glass`, `.round`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`, the empty state (`.empty-text`, its `.empty-title` above the sentence). Two looks: iOS on a phone, SwiftUI on a Mac from 1024px wide (the phone's grouped colors with a window's metrics: 13px text, 28px controls, tighter corners, a sidebar that selects with a rounded highlight), by tokens and one media query. |
+| `app.css` | Tokens (dark on `:root`, light on `[data-theme='light']`), base elements, native controls (a bare `input[type=search]` is the search field), buttons (`.filled`, `.tinted`, `.glass`, `.round`, `.destructive`, `.wide`), inset grouped lists (`.section > h2 + ul.list > li > .cell`), `.segmented`, `.chip-row`, `.banner`, the empty state (`.empty-text`, its `.empty-title` above the sentence). Two sizes of one look, iOS 26 and its Liquid Glass: the phone's, and from 1024px wide the same corners, capsules, grouped colors and glass with a wide screen's room (a floating glass sidebar, a 15px body text, 36px controls) and a pointer's hover, by tokens and one media query. |
 | `Shell.svelte` | The page frame: `.app`, the opaque status bar strip, `main.page`, a `floating` snippet for the tab bar. |
-| `TabBar.svelte` | Floating capsule on a phone, sidebar from 1024px, which a button (or Cmd or Ctrl + `\`) folds to a 48px strip. Needs `.tabbed` on the shell. |
+| `TabBar.svelte` | Floating capsule on a phone, a floating glass panel from 1024px, which a button (or Cmd or Ctrl + `\`) folds to a small panel keeping the button. Needs `.tabbed` on the shell. |
 | `sidebar.svelte.ts` | Whether the desktop sidebar is folded: kept by the browser, written on `<html data-sidebar>` for the CSS; `toggleSidebar()`. The button's words are `text.hideSidebar` and `text.showSidebar`. |
 | `TitleBar.svelte` | Large or inline title, back button, `trailing` and `banners` snippets, then the offline and new version banners. |
 | `Sheet.svelte` | Bottom sheet on a native `<dialog>`: pull down to close, Cancel/Save header with `onsave`. |

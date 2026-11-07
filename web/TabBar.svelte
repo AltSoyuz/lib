@@ -134,26 +134,28 @@
 	}
 
 	@media (min-width: 1024px) {
+		/* A panel of glass floating 12px inside the window, as the phone's capsule does at the bottom: the rail is its width and that room on both sides. */
 		.tabbar {
-			top: 0;
+			/* Above the sticky title bar (21), whose opaque fill would cut the sidebar's shadow. */
+			z-index: 30;
+			top: var(--space-3);
 			right: auto;
-			bottom: 0;
-			left: 0;
+			bottom: var(--space-3);
+			left: var(--space-3);
 			flex-direction: column;
 			justify-content: flex-start;
 			gap: 2px;
-			width: var(--rail-width);
+			width: calc(var(--rail-width) - 2 * var(--space-3));
 			max-width: none;
 			height: auto;
 			margin: 0;
-			padding: calc(var(--safe-top) + var(--space-2)) var(--space-2) var(--space-4);
-			border: 0;
-			border-right: 1px solid var(--separator);
-			border-radius: 0;
-			background: color-mix(in oklab, var(--foreground) 4%, var(--background));
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
+			padding: var(--space-3) var(--space-2) var(--space-4);
+			border: var(--hairline) solid var(--glass-edge);
+			border-radius: var(--radius-lg);
+			background: var(--glass);
+			box-shadow: var(--glass-shadow);
+			-webkit-backdrop-filter: var(--glass-blur);
+			backdrop-filter: var(--glass-blur);
 		}
 
 		.head {
@@ -177,10 +179,10 @@
 			display: grid;
 			place-items: center;
 			flex: none;
-			width: 28px;
-			height: 28px;
+			width: 32px;
+			height: 32px;
 			padding: 0;
-			border-radius: var(--radius);
+			border-radius: var(--radius-pill);
 			background: transparent;
 			color: var(--muted-foreground);
 		}
@@ -199,7 +201,12 @@
 			}
 		}
 
-		/* Folded: a strip of the rail's width that keeps the button, the sidebar's one way back. */
+		/* Folded: a small floating panel that keeps the button, the sidebar's one way back. */
+		:global(:root[data-sidebar='collapsed']) .tabbar {
+			bottom: auto;
+			padding: var(--space-1);
+		}
+
 		:global(:root[data-sidebar='collapsed']) .head {
 			justify-content: center;
 			margin-bottom: 0;
@@ -221,9 +228,9 @@
 			justify-content: flex-start;
 			gap: var(--space-2);
 			max-width: none;
-			min-height: calc(var(--control-height) + 2px);
+			min-height: calc(var(--control-height) + 4px);
 			padding: 0 var(--space-3);
-			border-radius: var(--radius);
+			border-radius: var(--radius-pill);
 			color: var(--foreground);
 			font-size: var(--text-body);
 			font-weight: 400;

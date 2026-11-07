@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `web/` desktop look (from 1024px wide), redone: v0.13.0 gave it a Mac's classic metrics (small corners, 13px text,
+  flat controls), a generation older than the phone's. Apple asks the same material and the same curves on every
+  platform and a layout and a density of each (HIG, Liquid Glass; Designing for macOS), so the desktop is now the
+  phone's look at a wide screen's size. A phone is untouched.
+  - Corners and shapes are the phone's: `--radius-sm` 8px, `--radius` 14px, `--radius-lg` 26px, `--radius-xl` 34px
+    (v0.13.0 set them to 5, 7, 10 and 12px), buttons and chips are capsules, the toolbar's buttons are round glass
+    again, the search field is the phone's pill on the fill, a segmented control is a pill.
+  - Type is the phone's iOS scale at a desk's size, bigger than v0.13.0's 13px: `--text-body` 15px (the phone's 17px),
+    callout 14, subhead 13, footnote 12, caption 11, title3 18, title2 20, large title 28; `--leading` 1.35.
+  - `--control-height` 36px (v0.13.0: 28px), a rows' padding is the phone's again.
+  - Sidebar (`TabBar`): a floating panel of glass, 12px inside the window with the phone's corners, glass, edge and
+    shadow tokens, rows and their selected highlight as capsules, above the sticky title bar. Its rail is 280px
+    (256px wide, 12px of room on both sides); folded it is a small floating panel 48px wide that keeps the button
+    (rail 72px).
+  - The grouped colors, the fine `--separator` and the hover affordances of v0.13.0 stay.
+  - An app that hard-codes the metrics of v0.13.0 (a 13px size, a 7px corner) looks a step off; one that reads the
+    kit's tokens follows. Look at each app at 1440px at its next bump.
+
 ## [0.13.0]
 
 ### Added

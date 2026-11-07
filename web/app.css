@@ -819,54 +819,44 @@ button.cell:disabled {
 	}
 }
 
-/* The desktop look, after SwiftUI on a Mac: nothing here applies below 1024px. It keeps the phone's grouped colors, whose
-   contrast is checked above, and takes a window's metrics: 13px text, 28px controls, tighter corners. */
+/* The desktop look, from 1024px wide: nothing here applies below. Apple asks the same material and the same curves on every
+   platform (HIG, Liquid Glass) and a layout and a density of each: so this is the phone's look, its iOS 26 corners, its
+   capsules, its grouped colors and its glass, with a wide screen's room, a pointer's hover and a text sized for a desk. */
 @media (min-width: 1024px) {
 	/* The light theme sets these again below 1024px with a selector that wins over :root alone. */
 	:root,
 	:root[data-theme='light'] {
 		/* A fine rule: the phone's separator is drawn for a thick finger-sized row, too heavy for a desktop's. */
 		--separator: color-mix(in oklab, var(--foreground) 11%, transparent);
-		/* A hairline ring and a breath of shadow, as a grouped form on a Mac: the ring takes no room, so a card keeps its size. */
-		--card-edge: 0 0 0 0.5px color-mix(in oklab, var(--separator) 70%, transparent), 0 1px 2px rgb(0 0 0 / 5%);
-		/* The border of a field or a bordered button. */
+		/* A hairline ring around a card: it takes no room, so a card keeps its size. */
+		--card-edge: 0 0 0 0.5px color-mix(in oklab, var(--foreground) 9%, transparent);
+		/* The border of a field. */
 		--input: color-mix(in oklab, var(--foreground) 16%, transparent);
 		--shadow-xs: 0 0.5px 1px rgb(0 0 0 / 14%);
-		--glass: var(--card);
-		--glass-edge: var(--separator);
-		--glass-shadow: 0 8px 24px rgb(0 0 0 / 22%);
-		--glass-shadow-sm: none;
-		--chip: var(--card);
-		--bar: color-mix(in oklab, var(--background) 80%, transparent);
 
-		--radius-sm: 5px;
-		--radius: 7px;
-		--radius-lg: 10px;
-		--radius-xl: 12px;
-
-		/* The "macOS built-in text styles" of the HIG: Large Title 26, Title 2 17, Title 3 15, Body 13, Callout 12, Subheadline 11,
-		   Footnote and Caption 10 (its minimum), with their tight line heights (16 on 13, 15 on 12, 14 on 11, 13 on 10). */
-		--text-large-title: 1.625rem;
-		--text-title2: 1.0625rem;
-		--text-title3: 0.9375rem;
-		--text-body: 0.8125rem;
-		--text-callout: 0.75rem;
-		--text-subhead: 0.6875rem;
-		--text-footnote: 0.625rem;
-		--text-caption: 0.625rem;
-		--leading: 1.25;
+		/* The phone's iOS text styles, in the sizes of a desk: body 15px where the phone has 17px. */
+		--text-large-title: 1.75rem;
+		--text-title2: 1.25rem;
+		--text-title3: 1.125rem;
+		--text-body: 0.9375rem;
+		--text-callout: 0.875rem;
+		--text-subhead: 0.8125rem;
+		--text-footnote: 0.75rem;
+		--text-caption: 0.6875rem;
+		--leading: 1.35;
 		--leading-tight: 1.2;
 
-		--control-height: 28px;
+		--control-height: 36px;
 	}
 
+	/* The sidebar floats as a panel of glass, 12px from the window's edges: the rail is its width and that room on both sides. */
 	.tabbed {
-		--rail-width: 256px;
+		--rail-width: 280px;
 	}
 
-	/* The sidebar folded to its strip (sidebar.svelte.ts writes data-sidebar on <html>). */
+	/* The sidebar folded to a small floating panel that keeps the button (sidebar.svelte.ts writes data-sidebar on <html>). */
 	:root[data-sidebar='collapsed'] .tabbed {
-		--rail-width: 48px;
+		--rail-width: 72px;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
@@ -895,40 +885,14 @@ button.cell:disabled {
 		opacity: 1;
 	}
 
-	.filled,
-	.tinted,
-	.glass {
-		min-height: var(--control-height);
-		padding: 0 var(--space-4);
-		border-radius: var(--radius);
-		font-weight: 500;
-	}
-
+	/* The phone's capsules at a pointer's size. */
 	.filled {
-		box-shadow: var(--shadow-xs);
+		min-height: calc(var(--control-height) + 4px);
 	}
 
 	.filled.destructive {
 		background: var(--destructive);
 		color: #fff;
-	}
-
-	.tinted {
-		background: var(--fill);
-		color: var(--foreground);
-	}
-
-	.glass {
-		border: 1px solid var(--input);
-		background: var(--card);
-		box-shadow: var(--shadow-xs);
-		-webkit-backdrop-filter: none;
-		backdrop-filter: none;
-	}
-
-	.round {
-		padding: 0;
-		border-radius: var(--radius);
 	}
 
 	@media (hover: hover) {
@@ -953,13 +917,16 @@ button.cell:disabled {
 	textarea {
 		border: 1px solid var(--input);
 		border-radius: var(--radius);
-		background: var(--card);
+		background-color: var(--card);
 		font-size: var(--text-body);
 		transition: border-color 150ms ease;
 	}
 
+	/* The search field stays the phone's pill on the fill, without a border. */
 	input[type='search'] {
-		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.75' cy='10.75' r='6.25'/%3E%3Cpath d='m15.5 15.5 4.75 4.75'/%3E%3C/svg%3E") var(--space-3) center / 16px no-repeat var(--card);
+		border: 0;
+		border-radius: var(--radius-pill);
+		background-color: var(--fill);
 	}
 
 	input:not([type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [role='switch']):focus-visible,
@@ -985,15 +952,6 @@ button.cell:disabled {
 
 	.list textarea {
 		padding: var(--space-3) var(--space-4);
-	}
-
-	/* Rows are inset like their text, as in a Mac form. */
-	.list > li + li::before {
-		left: var(--space-3);
-	}
-
-	.cell {
-		padding: 7px var(--space-3);
 	}
 
 	.cell > button:not(.cell) {
@@ -1026,20 +984,12 @@ button.cell:disabled {
 	.segmented {
 		width: fit-content;
 		max-width: 100%;
-		border-radius: calc(var(--radius) + 3px);
 	}
 
 	.segmented button {
 		flex: none;
-		padding: 0 var(--space-3);
-		border-radius: calc(var(--radius) + 3px);
+		padding: 0 var(--space-4);
 		font-size: var(--text-body);
-		font-weight: 500;
-	}
-
-	.segmented button[aria-pressed='true'] {
-		box-shadow: var(--shadow-xs);
-		font-weight: 500;
 	}
 
 	/* Chips wrap on a desktop, where nothing swipes sideways. */
@@ -1049,21 +999,6 @@ button.cell:disabled {
 		margin: 0 0 var(--space-4);
 		padding: 0;
 		overflow: visible;
-	}
-
-	.chip-row > :is(button, label) {
-		min-height: calc(var(--control-height) - 4px);
-		padding: 0 var(--space-3);
-		border: 1px solid var(--input);
-		border-radius: var(--radius);
-		box-shadow: var(--shadow-xs);
-		font-size: var(--text-body);
-		font-weight: 500;
-	}
-
-	.chip-row button[aria-pressed='true'] {
-		border-color: var(--primary);
-		font-weight: 500;
 	}
 
 	@media (hover: hover) {
