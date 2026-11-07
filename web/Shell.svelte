@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import './pwa.svelte';
+	import { leavesPage } from './viewport';
 
 	// The frame of every page: .app is what pwa.svelte.ts remeasures after the keyboard; floating holds the tab bar and other fixed controls.
 	let {
@@ -19,7 +20,8 @@
 	let scrollY = $state(0);
 
 	// WebKit sends no focusout for a field leaving with its page, the cue pwa.svelte.ts remeasures a viewport the keyboard left short on.
-	beforeNavigate(() => {
+	beforeNavigate(({ from, to }) => {
+		if (!leavesPage(from?.url, to?.url)) return;
 		const f = document.activeElement;
 		if (f instanceof HTMLInputElement || f instanceof HTMLTextAreaElement || f instanceof HTMLSelectElement) f.blur();
 	});

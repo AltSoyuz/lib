@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `web/Shell.svelte`: every navigation blurred the focused field, even one that stays on the page, so a search writing
+  its query in the URL as one types lost its field at each pause. The field is now blurred only when the navigation
+  leaves the page (`leavesPage` in `web/viewport.ts`), the case the blur exists for.
+
 ## [0.12.0]
 
 ### Added
