@@ -239,6 +239,21 @@
 			margin-right: var(--space-3);
 		}
 
+		/* A toolbar item has no bezel on a Mac (HIG, Toolbars): the bar's buttons are bare symbols until hovered. */
+		.back,
+		.trail :global(.glass) {
+			border-color: transparent;
+			background: transparent;
+			box-shadow: none;
+		}
+
+		@media (hover: hover) {
+			.back:hover:not(:disabled),
+			.trail :global(.glass:hover:not(:disabled)) {
+				background: var(--fill);
+			}
+		}
+
 		.inline .trail {
 			margin-left: var(--space-3);
 		}

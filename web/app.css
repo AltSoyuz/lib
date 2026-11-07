@@ -844,15 +844,17 @@ button.cell:disabled {
 		--radius-lg: 10px;
 		--radius-xl: 12px;
 
+		/* The "macOS built-in text styles" of the HIG: Large Title 26, Title 2 17, Title 3 15, Body 13, Callout 12, Subheadline 11,
+		   Footnote and Caption 10 (its minimum), with their tight line heights (16 on 13, 15 on 12, 14 on 11, 13 on 10). */
 		--text-large-title: 1.625rem;
 		--text-title2: 1.0625rem;
 		--text-title3: 0.9375rem;
 		--text-body: 0.8125rem;
-		--text-callout: 0.8125rem;
-		--text-subhead: 0.75rem;
-		--text-footnote: 0.6875rem;
-		--text-caption: 0.6875rem;
-		--leading: 1.4;
+		--text-callout: 0.75rem;
+		--text-subhead: 0.6875rem;
+		--text-footnote: 0.625rem;
+		--text-caption: 0.625rem;
+		--leading: 1.25;
 		--leading-tight: 1.2;
 
 		--control-height: 28px;

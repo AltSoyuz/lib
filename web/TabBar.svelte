@@ -163,9 +163,11 @@
 			line-height: var(--leading);
 		}
 
+		/* Sidebar icons take the accent color by default (HIG, Sidebars). */
 		svg {
 			width: 16px;
 			height: 16px;
+			color: var(--tint);
 			stroke-width: 2;
 		}
 

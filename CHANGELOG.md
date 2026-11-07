@@ -14,10 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Colors: the phone's grouped palette (a gray window, white or gray cards, contrast already checked) replaces the
     flat white one. `--separator` is a fine rule at 11% of the foreground; `--input`, `--shadow-xs`, `--glass*`,
     `--chip` and `--bar` follow from the theme and are set for both themes.
-  - Metrics: `--text-body` 13px (title3 15px, title2 17px, large title 26px, footnote 11px), `--control-height` 28px,
+  - Type: the "macOS built-in text styles" of Apple's Human Interface Guidelines (typography): `--text-large-title` 26px,
+    title2 17px, title3 15px, body 13px, callout 12px, subhead 11px, footnote and caption 10px (the HIG's minimum),
+    `--leading` 1.25 (the HIG's 16 on 13, 15 on 12, 14 on 11, 13 on 10).
+  - Metrics, chosen here (the HIG gives no control height, row height or radius for a Mac): `--control-height` 28px,
     `--radius-sm` 5px, `--radius` 7px, `--radius-lg` 10px, `--radius-xl` 12px. A bordered button, a field and a search
     field sit on `--card`; a list row is 7px by 12px with its rule inset like its text.
-  - Sidebar (`TabBar`): the selected row is a rounded highlight in the accent color, rows a little taller, a 28px logo.
+  - Sidebar (`TabBar`): the selected row is a rounded highlight in the accent color (the HIG: persistently highlight
+    the current selection), the icons take the accent color by default (HIG, Sidebars), rows a little taller, a 28px logo.
+  - Toolbar (`TitleBar`): the back button and the trailing `.glass` buttons have no bezel, as a toolbar item on a Mac
+    (HIG, Toolbars); they show a fill on hover.
   - An app that reads `--control-height`, `--radius*` or `--text-*` for its own boxes follows the new metrics; one that
     hard-codes them keeps its look. Look at each app at 1440px at its next bump: the layout of a page can change.
 
