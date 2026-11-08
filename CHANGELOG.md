@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0]
+
 ### Changed
 
 - `web/` desktop look (from 1024px wide), redone: v0.13.0 gave it a Mac's classic metrics (small corners, 13px text,
