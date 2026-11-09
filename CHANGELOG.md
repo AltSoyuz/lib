@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `httpserver`: the `path` label of `app_http_requests_total` and `app_http_request_duration_seconds` is now the route
+  pattern the mux matched, without its method (`/api/files/{id}/thumb`), and `unmatched` for a request no pattern
+  matched; it was the raw URL path, one never-freed series per distinct URL (ids, scanners' paths, 404s included).
+  Metric names, other labels and `method` are unchanged. A dashboard or an alert filtering on a concrete path must
+  filter on the pattern instead. The pattern is read from the request `Serve` hands to the handler: a middleware
+  between `Serve` and the mux that passes a copy of the request (`http.MaxBytesHandler`, `r.WithContext`) hides it,
+  and every request is then labelled `unmatched`.
+
 ## [0.14.0]
 
 ### Changed

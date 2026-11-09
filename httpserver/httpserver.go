@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AltSoyuz/lib/buildinfo"
@@ -200,8 +201,21 @@ func (rw *statusResponseWriter) Flush() {
 	}
 }
 
+// routeLabel is the path label of the request metrics: the mux pattern without its method, "unmatched" when none matched.
+func routeLabel(pattern string) string {
+	if pattern == "" {
+		return "unmatched"
+	}
+	if _, path, ok := strings.Cut(pattern, " "); ok {
+		return path
+	}
+	return pattern
+}
+
 // wrapHandlerWithBuiltins wraps the provided handler with built-in routes for health checks, version, and metrics.
-// It also records per-request HTTP metrics for all non-builtin routes.
+// It also records per-request HTTP metrics for all non-builtin routes, labelled by the route pattern the mux matched
+// (read from r.Pattern once the handler returns): a middleware between this wrapper and the mux that passes a copy of
+// the request hides the pattern, and every request is then labelled "unmatched".
 func wrapHandlerWithBuiltins(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
@@ -227,7 +241,7 @@ func wrapHandlerWithBuiltins(next http.Handler) http.Handler {
 		next.ServeHTTP(srw, r)
 		dur := time.Since(start).Seconds()
 
-		path := r.URL.Path
+		path := routeLabel(r.Pattern)
 		method := r.Method
 		statusCode := strconv.Itoa(srw.statusCode)
 

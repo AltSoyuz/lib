@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,6 +16,7 @@ import (
 	"time"
 
 	"github.com/AltSoyuz/lib/logger"
+	"github.com/VictoriaMetrics/metrics"
 )
 
 func TestWrapHandlerWithBuiltins(t *testing.T) {
@@ -47,6 +49,88 @@ func TestWrapHandlerWithBuiltins(t *testing.T) {
 		}
 		if ct := res.Header.Get("Content-Type"); ct != "text/plain; charset=utf-8" {
 			t.Fatalf("metrics content-type = %q; want %q", ct, "text/plain; charset=utf-8")
+		}
+	})
+}
+
+// metricLines returns the lines of the registered metrics that contain every one of the given substrings.
+func metricLines(t *testing.T, contains ...string) []string {
+	t.Helper()
+	var buf bytes.Buffer
+	metrics.WritePrometheus(&buf, false)
+	var out []string
+	for _, line := range strings.Split(buf.String(), "\n") {
+		match := true
+		for _, c := range contains {
+			match = match && strings.Contains(line, c)
+		}
+		if match {
+			out = append(out, line)
+		}
+	}
+	return out
+}
+
+func TestRequestMetricsLabelByRoutePattern(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /metrictest/files/{id}", func(w http.ResponseWriter, r *http.Request) {})
+	mux.HandleFunc("POST /metrictest/upload/{id}", func(w http.ResponseWriter, r *http.Request) {})
+	mux.HandleFunc("/metrictest/any/{id}", func(w http.ResponseWriter, r *http.Request) {})
+	h := wrapHandlerWithBuiltins(mux)
+
+	serve := func(method, path string) {
+		h.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(method, path, nil))
+	}
+
+	t.Run("two ids of one pattern make one series", func(t *testing.T) {
+		serve(http.MethodGet, "/metrictest/files/123")
+		serve(http.MethodGet, "/metrictest/files/124")
+
+		lines := metricLines(t, "app_http_requests_total{", "metrictest/files")
+		want := `app_http_requests_total{method="GET",path="/metrictest/files/{id}",status_code="200"} 2`
+		if len(lines) != 1 || lines[0] != want {
+			t.Fatalf("request counters = %q; want [%q]", lines, want)
+		}
+		lines = metricLines(t, "app_http_request_duration_seconds_count{", "metrictest/files")
+		want = `app_http_request_duration_seconds_count{method="GET",path="/metrictest/files/{id}"} 2`
+		if len(lines) != 1 || lines[0] != want {
+			t.Fatalf("duration counts = %q; want [%q]", lines, want)
+		}
+	})
+
+	t.Run("unknown path is unmatched", func(t *testing.T) {
+		serve(http.MethodGet, "/metrictest/unknown/1")
+		serve(http.MethodGet, "/metrictest/unknown/2")
+
+		if lines := metricLines(t, "metrictest/unknown"); len(lines) != 0 {
+			t.Fatalf("raw path leaked into the metrics: %q", lines)
+		}
+		lines := metricLines(t, "app_http_requests_total{", `path="unmatched"`, `status_code="404"`)
+		if len(lines) == 0 {
+			t.Fatal("no unmatched series for the 404")
+		}
+	})
+
+	t.Run("method prefix is dropped from the label", func(t *testing.T) {
+		serve(http.MethodPost, "/metrictest/upload/7")
+
+		lines := metricLines(t, "app_http_requests_total{", "metrictest/upload")
+		want := `app_http_requests_total{method="POST",path="/metrictest/upload/{id}",status_code="200"} 1`
+		if len(lines) != 1 || lines[0] != want {
+			t.Fatalf("request counters = %q; want [%q]", lines, want)
+		}
+		if lines := metricLines(t, "metrictest", `path="GET `); len(lines) != 0 {
+			t.Fatalf("method leaked into the path label: %q", lines)
+		}
+	})
+
+	t.Run("pattern without method is kept as is", func(t *testing.T) {
+		serve(http.MethodPut, "/metrictest/any/9")
+
+		lines := metricLines(t, "app_http_requests_total{", "metrictest/any")
+		want := `app_http_requests_total{method="PUT",path="/metrictest/any/{id}",status_code="200"} 1`
+		if len(lines) != 1 || lines[0] != want {
+			t.Fatalf("request counters = %q; want [%q]", lines, want)
 		}
 	})
 }
