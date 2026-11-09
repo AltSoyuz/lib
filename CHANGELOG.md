@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0]
+
 ### Changed
 
 - `httpserver`: the `path` label of `app_http_requests_total` and `app_http_request_duration_seconds` is now the route
